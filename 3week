@@ -1,0 +1,25 @@
+number =  int(input())
+
+time = list(map(int, input().split()))
+
+def Exchange(first, second):
+    temp = time[first]
+    time[first] = time[second]
+    time[second] = temp
+
+def sum_list(list):
+    sum = 0
+    for i in range(0, number+1):
+        for j in range(0, i):
+            sum = sum + list[j]
+    return sum
+
+for i in range(0, number-1):
+    for j in range(0, number-1-i):
+        if time[j] >= time[j+1]:
+            Exchange(j, j+1)
+
+print(sum_list(time))
+
+
+''' 백준 : 11399
