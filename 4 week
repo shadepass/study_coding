@@ -1,1 +1,50 @@
 # 백준 2873 롤러코스터 
+
+import sys
+
+# Define
+Result_Value=[]
+Result_Order=[]
+Result_Order2=[]
+
+def Roller_Coaster(Check_Row, Check_Col, Row, Col, Value_List, Check_List, result):
+    Check_List[Check_Row][Check_Col] = 1
+    result = result + Value_List[Check_Row][Check_Col]
+
+    if Check_Row == Row-1 and Check_Col == Col - 1:
+        Check_List[Check_Row][Check_Col]=0
+        Result_Value.append(result)
+        string = ''.join(Result_Order)
+        Result_Order2.append(string)
+        Result_Order.pop()
+        return 
+
+    if 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+        Result_Order.append('R')
+        Roller_Coaster(Check_Row, Check_Col+1, Row, Col, Value_List, Check_List, result)
+    if 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+        Result_Order.append('D')
+        Roller_Coaster(Check_Row+1, Check_Col, Row, Col, Value_List, Check_List, result)      
+    if 0<=Check_Col-1<=Col-1 and Check_List[Check_Row][Check_Col-1]==0:
+        Result_Order.append('L')
+        Roller_Coaster(Check_Row, Check_Col-1, Row, Col, Value_List, Check_List, result)      
+    if 0<=Check_Row-1<=Row-1 and Check_List[Check_Row-1][Check_Col]==0:
+        Result_Order.append('U')
+        Roller_Coaster(Check_Row-1, Check_Col, Row, Col, Value_List, Check_List, result)       
+    Check_List[Check_Row][Check_Col] = 0
+    if Result_Order:
+        Result_Order.pop()
+ 
+# input
+Row, Col = map(int, input().split())
+Point_list = [list(map(int, input().split())) for _ in range(Row)]
+Check_list = [[0]*Col for _ in range(Row)]
+
+# Execute
+
+Roller_Coaster(0, 0, Row, Col, Point_list, Check_list, 0)
+#print(Result_Value)
+#print(Result_Order2)
+#print(Result_Value.index(max(Result_Value)))
+
+print(Result_Order2[Result_Value.index(max(Result_Value))])
