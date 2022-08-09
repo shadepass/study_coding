@@ -383,7 +383,7 @@ def Even_Eulerian(Row, Col, Value_List, Check_List):
                 Check_List[Check_Row][Check_Col]=1
                 Result_Order.append('D')
 
-        # 지그재그로 진행 한 이후에는 오른쪽에 끝나기 때문에 왼쪽으로 먼저 진행
+        # 지그재그로 진행 한 이후에는 오른쪽에서 끝나기 때문에 왼쪽으로 먼저 진행
         elif Check_Come:
             if 0<=Check_Col-1<=Col-1 and Check_List[Check_Row][Check_Col-1]==0:
                 Check_Col = Check_Col - 1
@@ -417,7 +417,7 @@ def Odd_Eulerian(Row, Col, Check_List):
     Check_Row = 0
     Check_Col = 0
 
-    # 짝수부분이 행인 경우 행 기준으로 지그재그 순서로 전체 부분 진행
+    # 열이 짝수인 경우 열 기준으로 지그재그 순서로 전체 부분 진행
     if Row % 2 == 0:
         while(Check_Row != Row-1 or Check_Col != Col-1):
             Check_List[Check_Row][Check_Col] = 1
@@ -434,7 +434,7 @@ def Odd_Eulerian(Row, Col, Check_List):
                 Check_List[Check_Row][Check_Col] = 1
                 Result_Order.append('R')
 
-    # 행이 짝수가 아닌 경우 열을 기준으로 지그재그 순서로 전체 부분 진행
+    # 열이 짝수가 아닌 경우 행을 기준으로 지그재그 순서로 전체 부분 진행
     else:
             while(Check_Row != Row-1 or Check_Col != Col-1):
                 Check_List[Check_Row][Check_Col] = 1
