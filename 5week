@@ -1,0 +1,24 @@
+# 백준 10250번 ACM 호텔
+
+def ACM_Hotel(Test_Case):
+    for case in range(len(Test_Case)):
+        Floor = Test_Case[case][2] % Test_Case[case][0]
+        Room = int(Test_Case[case][2] / Test_Case[case][0])
+
+        if Floor == 0:
+            print(Test_Case[case][0], end='')
+        else:
+            print(Floor, end='')
+            Room = Room + 1
+
+        if Room < 10:
+            print("0%d" %Room)
+        else:
+            print(Room)
+
+# input
+Test_Case_Num = int(input())
+Test_Case = [list(map(int, input().split())) for _ in range (Test_Case_Num)]
+
+# Execute 
+ACM_Hotel(Test_Case)
