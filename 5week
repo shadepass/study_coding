@@ -1,10 +1,12 @@
 # 백준 10250번 ACM 호텔
 
 def ACM_Hotel(Test_Case):
+    # 각 테스트 케이스별로 결과값 출력
     for case in range(len(Test_Case)):
         Floor = Test_Case[case][2] % Test_Case[case][0]
         Room = int(Test_Case[case][2] / Test_Case[case][0])
-
+        
+        # 온 순서에 따라서 층수와 방번호 배정
         if Floor == 0:
             print(Test_Case[case][0], end='')
         else:
