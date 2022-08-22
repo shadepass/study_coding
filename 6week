@@ -364,15 +364,14 @@ RPG_Game()
 Print_Result()
 
 ===================================================================================
-
 #-*- coding:utf-8 -*-
 
 # 그리드 내 몬스터 개수 파악하는 함수
 def Couting_Monster():
     global Grid, Row, Col
     Count = 0
-    for i in range(Row):
-        for j in range(Col):
+    for i in range(Row-1):
+        for j in range(Col-1):
             if Grid[i][j] == '&' or Grid[i][j] == 'M':
                 Count = Count + 1
     return Count
@@ -381,13 +380,11 @@ def Couting_Monster():
 def Couting_Item():
     global Grid, Row, Col
     Count = 0
-    Coordinate = []
-    for i in range(Row):
-        for j in range(Col):
+    for i in range(Row-1):
+        for j in range(Col-1):
             if Grid[i][j] == 'B':
                 Count = Count + 1
-                Coordinate.apend([Row, Col])
-    return Coordinate, Count
+    return Count
 
 # 같은 문자열이 있는지 확인하여 같은게 있으면 1 리턴
 def Check_Item(Check):
@@ -401,15 +398,28 @@ def Check_Item(Check):
 def Character_Location():
     global Grid, Character, Row, Col
     global Character_Row, Character_Col
-    for i in range(Row):
-        for j in range(Col):
+    global Current_Row, Current_Col 
+
+    for i in range(Row-1):
+        for j in range(Col-1):
             if Grid[i][j] == '@':
                 break
 
     Character_Row = i
+    Current_Row = i
     Character_Col = j
+    Current_Col = j
 
     Grid[Character_Row][Character_Col] = '.'
+
+def Level_up():
+    global Character
+    Character[4] = 0
+    Character[0] = Character[0] + 1
+    Character[8] = Character[8] + 5
+    Character[2] = Character[2] + 2
+    Character[3] = Character[3] + 2
+    Character[1] = Character[8]
 
 
 # 아이템칸 만났을 때
@@ -419,20 +429,20 @@ def Meet_Item():
     global Item, Num_Item, Character, Current_Row, Current_Col
     # 해당 위치에 어떤 아이템이 있는지 확인
     for i in range(Num_Item):
-        if Current_Row == Item[i][0]-1 and Current_Col == Item[i][1]-1:
+        if Current_Row == int(Item[i][0])-1 and Current_Col == int(Item[i][1])-1:
             break
 
     # 종류에 따라서 다르게 처리
     if Item[i][2] == 'W':
         # 캐릭터 무기 바꾸기
         Character[2] = Character[2] - Character[5]
-        Character[5] = Item[i][3]
+        Character[5] = int(Item[i][3])
         Character[2] = Character[2] + Character[5]
 
     elif Item[i][2] == 'A':
         # 캐릭터 방어구 바꾸기
         Character[3] = Character[3] - Character[6]
-        Character[5] = Item[i][3]
+        Character[5] = int(Item[i][3])
         Character[2] = Character[2] + Character[6]
 
     elif Item[i][2] == 'O':
@@ -451,13 +461,12 @@ def Meet_Item():
 # 몬스터 정보 : 0 : 열(1부터 시작)0, 1 : 행(1부터 시작), 2: 몬스터 이름(문자열), 3 : 공격력, 4 : 방어력, 5 : 최대 체력, 6 : 경험치
 # 주인공 정보 = 레벨(0), 체력(1), 공격력(2), 방어력(3), 경험치(4), 무기(5), 방어구(6), 장신구(7), 최대 체력(8)
 def Meet_Monster():
-
     # 해당 위치에 어떤 몬스터가 있는지 확인
     global Monster, Num_Monster, Character, Current_Row, Current_Col, Character_Row, Character_Col
     for i in range(Num_Monster):
-        if Current_Row == Monster[i][0]-1 and Current_Col == Monster[i][1]-1:
+        if Current_Row == int(Monster[i][0])-1 and Current_Col == int(Monster[i][1])-1:
             break
-    Monster_HP = Monster[i][5]
+    Monster_HP = int(Monster[i][5])
 
     # 배틀 시작
     Come = 0
@@ -465,33 +474,33 @@ def Meet_Monster():
         # CO랑 DX 있는 경우 첫번째 공격에서 공격력 3배로 공격
         if Check_Item('CO') and Check_Item('DX') and Come == 0:
             Come = 1
-            Monster_HP = Monster_HP - max(1, Character[2]*3 - Monster[i][4])
+            Monster_HP = Monster_HP - max(1, int(Character[2])*3 - int(Monster[i][4]))
             if Monster_HP <= 0:
                 case = 1
                 break
 
-            Character[1] = Character[1] - max(1, Monster[i][3] - Character[3])
+            Character[1] = Character[1] - max(1, int(Monster[i][3]) - int(Character[3]))
             if Character[1] <= 0:
                 case = 2
                 break
         # CO\있는 경우 첫번째 공격에서 공격력 2배로 공격
         elif Check_Item('CO') and Come == 0:
             Come = 1
-            Monster_HP = Monster_HP - max(1, Character[2]*2 - Monster[i][4])
+            Monster_HP = Monster_HP - max(1, int(Character[2])*2 - int(Monster[i][4]))
             if Monster_HP <= 0:
                 case = 1
                 break
-            Character[1] = Character[1] - max(1, Monster[i][3] - Character[3])
+            Character[1] = Character[1] - max(1, int(Monster[i][3]) - int(Character[3]))
             if Character[1] <= 0:
                 case = 2
                 break
         # 아이템 없는 경우 그냥 공격력으로 공격
         else:
-            Monster_HP = Monster_HP - max(1, Character[2] - Monster[i][4])
+            Monster_HP = Monster_HP - max(1, int(Character[2]) - int(Monster[i][4]))
             if Monster_HP <= 0:
                 case = 1
                 break
-            Character[1] = Character[1] - max(1, Monster[i][3] - Character[3])
+            Character[1] = Character[1] - max(1, int(Monster[i][3]) - int(Character[3]))
             if Character[1] <= 0:
                 case = 2
                 break
@@ -506,25 +515,15 @@ def Meet_Monster():
 
         # EX 가지고 있으면 경험치 추가로 획득
         if Check_Item('EX'):
-            Character[4] = Character[4] + round(Monster[6]*1.2)
+            Character[4] = Character[4] + round(Monster[i][6]*1.2)
             if Character[4] >= Character[0] * 5:
-                Character[4] = 0
-                Character[0] = Character[0] + 1
-                Character[8] = Character[8] + 5
-                Character[2] = Character[2] + 2
-                Character[3] = Character[3] + 2
-                Character[1] = Character[8]
+                Level_up()
 
         # EX 없으면 몬스터가 가진거 그대로 획득
         else:
-            Character[4] = Character[4] + Monster[6]
+            Character[4] = Character[4] + int(Monster[i][6])
             if Character[4] >= Character[0] * 5:
-                Character[4] = 0
-                Character[0] = Character[0] + 1
-                Character[8] = Character[8] + 5
-                Character[2] = Character[2] + 2
-                Character[3] = Character[3] + 2
-                Character[1] = Character[8]
+                Level_up()
 
         # 몬스터가 있던 곳 빈칸으로 수정
         Grid[Current_Row][Current_Col] = '.'
@@ -556,9 +555,9 @@ def Meet_Bose():
     global Monster, Num_Monster, Character, Current_Row, Current_Col
     # 해당 위치에 어떤 몬스터가 있는지 확인
     for i in range(Num_Monster):
-        if Current_Row == Monster[i][0]-1 and Current_Col == Monster[i][1]-1:
+        if Current_Row == int(Monster[i][0])-1 and Current_Col == int(Monster[i][1])-1:
             break
-    Monster_HP = Monster[i][5]
+    Monster_HP = int(Monster[i][5])
 
     Come = 0
     while(1):
@@ -567,19 +566,19 @@ def Meet_Bose():
             Come = 1
             Character[1] = Character[8]
 
-            Monster_HP = Monster_HP - max(1, Character[2]*3 - Monster[i][4])
+            Monster_HP = Monster_HP - max(1, int(Character[2])*3 - int(Monster[i][4]))
             if Monster_HP <= 0:
                 case = 1
                 break
 
         if Check_Item('CO') and Check_Item('DX') and Come == 0:
             Come = 1
-            Monster_HP = Monster_HP - max(1, Character[2]*3 - Monster[i][4])
+            Monster_HP = Monster_HP - max(1, int(Character[2])*3 - int(Monster[i][4]))
             if Monster_HP <= 0:
                 case = 1
                 break
 
-            Character[1] = Character[1] - max(1, Monster[i][3] - Character[3])
+            Character[1] = Character[1] - max(1, int(Monster[i][3]) - int(Character[3]))
             if Character[1] <= 0:
                 case = 2
                 break
@@ -588,35 +587,36 @@ def Meet_Bose():
             Come = 1
             Character[1] = Character[8]
 
-            Monster_HP = Monster_HP - max(1, Character[2]*2 - Monster[i][4])
+            Monster_HP = Monster_HP - max(1, int(Character[2])*2 - int(Monster[i][4]))
             if Monster_HP <= 0:
                 case = 1
                 break
 
         elif Check_Item('CO') and Come == 0:
             Come = 1
-            Monster_HP = Monster_HP - max(1, Character[2]*2 - Monster[i][4])
+            Monster_HP = Monster_HP - max(1, int(Character[2])*2 - int(Monster[i][4]))
             if Monster_HP <= 0:
                 case = 1
                 break
-            Character[1] = Character[1] - max(1, Monster[i][3] - Character[3])
+            Character[1] = Character[1] - max(1, int(Monster[i][3]) - int(Character[3]))
             if Character[1] <= 0:
                 case = 2
                 break
 
         elif Check_Item('HU') and Come == 0:
             Come = 1
-            Monster_HP = Monster_HP - max(1, Character[2]- Monster[i][4])
+            Character[1] = Character[8]
+            Monster_HP = Monster_HP - max(1, int(Character[2])- int(Monster[i][4]))
             if Monster_HP <= 0:
                 case = 1
                 break
 
         else:
-            Monster_HP = Monster_HP - max(1, Character[2] - Monster[i][4])
+            Monster_HP = Monster_HP - max(1, int(Character[2])- int(Monster[i][4]))
             if Monster_HP <= 0:
                 case = 1
                 break
-            Character[1] = Character[1] - max(1, Monster[i][3] - Character[3])
+            Character[1] = Character[1] - max(1, int(Monster[i][3]) - int(Character[3]))
             if Character[1] <= 0:
                 case = 2
                 break
@@ -631,25 +631,15 @@ def Meet_Bose():
 
         # EX 가지고 있으면 경험치 추가로 획득
         if Check_Item('EX'):
-            Character[4] = Character[4] + round(Monster[6]*1.2)
+            Character[4] = Character[4] + round(Monster[i][6]*1.2)
             if Character[4] >= Character[0] * 5:
-                Character[4] = 0
-                Character[0] = Character[0] + 1
-                Character[8] = Character[8] + 5
-                Character[2] = Character[2] + 2
-                Character[3] = Character[3] + 2
-                Character[1] = Character[8]
+                Level_up()
 
         # EX 없으면 몬스터가 가진거 그대로 획득
         else:
-            Character[4] = Character[4] + Monster[6]
+            Character[4] = Character[4] + int(Monster[i][6])
             if Character[4] >= Character[0] * 5:
-                Character[4] = 0
-                Character[0] = Character[0] + 1
-                Character[8] = Character[8] + 5
-                Character[2] = Character[2] + 2
-                Character[3] = Character[3] + 2
-                Character[1] = Character[8]
+                Level_up()
 
             Grid[Current_Row][Current_Col] = '@'
             Print_Result(1, 'YOU WIN!')
@@ -726,51 +716,49 @@ def RPG_Game_Stage():
 # 1 : 보스 사망, 2 : 주인공 사망, 3 : 입력 끝남
 # 주인공 정보 = 레벨(0), 체력(1), 공격력(2), 방어력(3), 경험치(4), 무기(5), 방어구(6), 장신구(7), 최대 체력(8)
 def Print_Result(Result):
-    global Grid, Character, Turn
+    global Grid, Character, Turn, Row
 
-    print(Grid)
+    for i in range(Row):
+        print(''.join(list(Grid[i])))
     print('Passed Turn : ', Turn)
     print('LV : ', Character[0])
     print('HP : ', Character[2], '/', Character[8])
-    print('ATT : ', Character[2]-Character[5], '+', Character[5])
-    print('DEF : ', Character[3]-Character[6], '+', Character[6])
+    print('ATT : ', int(Character[2])-int(Character[5]), '+', Character[5])
+    print('DEF : ', int(Character[3])-int(Character[6]), '+', Character[6])
     print('EXP : ', Character[4], '/', Character[0]*5)
     print(Result)
-    return
+    exit()
 
 # 메인 함수
 def RPG_Game():
-    global Grid, Movement, Row, Col
-    global Current_Row, Current_Col
-
-    Current_Row = 0, Current_Col = 0
-
+    global Grid, Movement, Current_Row, Current_Col
+    
     for i in range(len(Movement)):
         if Movement[i] == 'L':
             Current_Col = Current_Col - 1
             if Current_Col < 0 or Grid[Current_Row][Current_Col] == '#':
                 Current_Col = Current_Col + 1
-            RPG_Game_Stage(Grid, Current_Row, Current_Col)
+            RPG_Game_Stage()
 
         elif Movement[i] == 'R':
             Current_Col = Current_Col + 1
             if Current_Col > Col-1 or Grid[Current_Row][Current_Col] == '#':
                 Current_Col = Current_Col - 1
-            RPG_Game_Stage(Grid, Current_Row, Current_Col)
+            RPG_Game_Stage()
 
         elif Movement[i] == 'U':
             Current_Row = Current_Row - 1
             if Current_Row < 0 or Grid[Current_Row][Current_Col] == '#':
                 Current_Row = Current_Row + 1
-            RPG_Game_Stage(Grid, Current_Row, Current_Col)
+            RPG_Game_Stage()
 
         elif Movement[i] == 'D':
             Current_Row = Current_Row + 1
             if Current_Row > Row-1 or Grid[Current_Row][Current_Col] == '#':
                 Current_Row = Current_Row - 1
-            RPG_Game_Stage(Grid, Current_Row, Current_Col)
+            RPG_Game_Stage()
 
-    Print_Result(3, 'Press any key to continue')
+    Print_Result('Press any key to continue')
             
     return
 
@@ -784,21 +772,22 @@ Turn = 0
 Row, Col = map(int, input().split())
 
 # 초기 그리드 입력
-Grid = [list(input().split()) for _ in range(Row)]
+Grid = [list(input()) for _ in range(Row)]
 
 # 주인공 전체 이동
-Movement = list(input().split())
+Movement = list(input())
 
 # 그리드 내 몬스터 및 아이템 개수 파악
 Num_Monster = Couting_Monster()
-Coordinate_Item, Num_Item = Couting_Item()
+Num_Item = Couting_Item()
 
 # 몬스터 및 아이템 정보 입력
 # 0 : 열(1부터 시작)0, 1 : 행(1부터 시작), 2: 몬스터 이름(문자열), 3 : 공격력, 4 : 방어력, 5 : 최대 체력, 6 : 경험치
-Monster = [list(input.split()) for _ in range(Num_Monster)]
+Monster = [list(input().split()) for _ in range(Num_Monster)]
 
 # 0 : 열(1부터 시작)0, 1 : 행(1부터 시작), 2: 장비 종류 3 : 장비 효과 및 무기/방어구 수치
-Item = [list(input.split()) for _ in range(Num_Item)]
+Item = [list(input().split()) for _ in range(Num_Item)]
 
+Character_Location()
 
 RPG_Game()
