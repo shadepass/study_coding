@@ -367,11 +367,14 @@ Print_Result()
 #-*- coding:utf-8 -*-
 
 # 그리드 내 몬스터 개수 파악하는 함수
+from typing import is_typeddict
+
+
 def Couting_Monster():
     global Grid, Row, Col
     Count = 0
-    for i in range(Row-1):
-        for j in range(Col-1):
+    for i in range(Row):
+        for j in range(Col):
             if Grid[i][j] == '&' or Grid[i][j] == 'M':
                 Count = Count + 1
     return Count
@@ -380,8 +383,8 @@ def Couting_Monster():
 def Couting_Item():
     global Grid, Row, Col
     Count = 0
-    for i in range(Row-1):
-        for j in range(Col-1):
+    for i in range(Row):
+        for j in range(Col):
             if Grid[i][j] == 'B':
                 Count = Count + 1
     return Count
@@ -400,10 +403,16 @@ def Character_Location():
     global Character_Row, Character_Col
     global Current_Row, Current_Col 
 
-    for i in range(Row-1):
-        for j in range(Col-1):
+    flag = 0
+    for i in range(Row):
+        for j in range(Col):
             if Grid[i][j] == '@':
+                Character_Row = i
+                Character_Col = j
+                flag = 1
                 break
+        if flag == 1:
+            break
 
     Character_Row = i
     Current_Row = i
@@ -442,8 +451,8 @@ def Meet_Item():
     elif Item[i][2] == 'A':
         # 캐릭터 방어구 바꾸기
         Character[3] = Character[3] - Character[6]
-        Character[5] = int(Item[i][3])
-        Character[2] = Character[2] + Character[6]
+        Character[6] = int(Item[i][3])
+        Character[3] = Character[3] + Character[6]
 
     elif Item[i][2] == 'O':
         # 캐릭터에 장신구 넣기
@@ -515,7 +524,7 @@ def Meet_Monster():
 
         # EX 가지고 있으면 경험치 추가로 획득
         if Check_Item('EX'):
-            Character[4] = Character[4] + round(Monster[i][6]*1.2)
+            Character[4] = Character[4] + round(int(Monster[i][6])*1.2)
             if Character[4] >= Character[0] * 5:
                 Level_up()
 
@@ -537,7 +546,7 @@ def Meet_Monster():
             Character[7].remove('RE')
         else:
             Character[1] = 0
-            Print_Result('YOU HAVE BEEN KILLED' + Monster[i][2])
+            Print_Result('YOU HAVE BEEN KILLED BY ' + Monster[i][2]+'..')
 
     return case
 
@@ -571,7 +580,7 @@ def Meet_Bose():
                 case = 1
                 break
 
-        if Check_Item('CO') and Check_Item('DX') and Come == 0:
+        elif Check_Item('CO') and Check_Item('DX') and Come == 0:
             Come = 1
             Monster_HP = Monster_HP - max(1, int(Character[2])*3 - int(Monster[i][4]))
             if Monster_HP <= 0:
@@ -631,7 +640,7 @@ def Meet_Bose():
 
         # EX 가지고 있으면 경험치 추가로 획득
         if Check_Item('EX'):
-            Character[4] = Character[4] + round(Monster[i][6]*1.2)
+            Character[4] = Character[4] + round(int(Monster[i][6])*1.2)
             if Character[4] >= Character[0] * 5:
                 Level_up()
 
@@ -642,7 +651,7 @@ def Meet_Bose():
                 Level_up()
 
             Grid[Current_Row][Current_Col] = '@'
-            Print_Result(1, 'YOU WIN!')
+            Print_Result('YOU WIN!')
 
     # 캐릭터가 죽음
     else:
@@ -653,7 +662,7 @@ def Meet_Bose():
             Character[7].remove('RE')
         else:
             Character[1] = 0
-            Print_Result('YOU HAVE BEEN KILLED' + Monster[i][2])
+            Print_Result('YOU HAVE BEEN KILLED BY ' + Monster[i][2]+'..')
 
     return
 
@@ -720,12 +729,12 @@ def Print_Result(Result):
 
     for i in range(Row):
         print(''.join(list(Grid[i])))
-    print('Passed Turn : ', Turn)
-    print('LV : ', Character[0])
-    print('HP : ', Character[2], '/', Character[8])
-    print('ATT : ', int(Character[2])-int(Character[5]), '+', Character[5])
-    print('DEF : ', int(Character[3])-int(Character[6]), '+', Character[6])
-    print('EXP : ', Character[4], '/', Character[0]*5)
+    print('Passed Turns : %d' %Turn)
+    print('LV : %d' %Character[0])
+    print('HP : %d/%d' %(Character[1], Character[8]))
+    print('ATT : %d+%d' %(int(Character[2])-int(Character[5]), Character[5]))
+    print('DEF : %d+%d' %(int(Character[3])-int(Character[6]), Character[6]))
+    print('EXP : %d/%d' %(Character[4], Character[0]*5))
     print(Result)
     exit()
 
@@ -758,9 +767,9 @@ def RPG_Game():
                 Current_Row = Current_Row - 1
             RPG_Game_Stage()
 
-    Print_Result('Press any key to continue')
-            
-    return
+    Grid[Current_Row][Current_Col] = '@'
+    Print_Result('Press any key to continue.')
+
 
 # 주인공 정보 = 레벨(0), 체력(1), 공격력(2), 방어력(3), 경험치(4), 무기(5), 방어구(6), 장신구(7), 최대 체력(8)
 # 초기 레벨 = 1, 체력 = 20, 공격력 = 2, 방어력 = 2, 경험치 = 0, 무기/방어구/장신구 = 빈칸
