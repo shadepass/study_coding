@@ -806,6 +806,8 @@ FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 #-*- coding:utf-8 -*-
 
+import math
+
 # 그리드 내 몬스터 개수 파악하는 함수
 def Couting_Monster():
     global Grid, Row, Col
@@ -964,7 +966,7 @@ def Meet_Monster():
 
         # EX 가지고 있으면 경험치 추가로 획득
         if Check_Item('EX'):
-            Character[4] = Character[4] + round(int(Monster[i][6])*1.2)
+            Character[4] = Character[4] + math.floor(int(Monster[i][6])*1.2)
             if Character[4] >= Character[0] * 5:
                 Level_up()
 
@@ -1080,7 +1082,7 @@ def Meet_Bose():
 
         # EX 가지고 있으면 경험치 추가로 획득
         if Check_Item('EX'):
-            Character[4] = Character[4] + round(int(Monster[i][6])*1.2)
+            Character[4] = Character[4] + math.floor(int(Monster[i][6])*1.2)
             if Character[4] >= Character[0] * 5:
                 Level_up()
 
