@@ -1,0 +1,35 @@
+import sys
+
+# 반복문을 이용한 Bubble Sort 함수
+def Bouble_Sort(In_Count, In_list):
+    for i in range(0, In_Count-1):
+        for j in range(0, In_Count-1-i):
+            if In_list[j] >= In_list[j+1]:
+                Value_Exchange(j, j+1, In_list)
+
+# 앞뒤 값 변경 함수
+def Value_Exchange(front, rear, In_list):
+    temp = In_list[front]
+    In_list[front] = In_list[rear]
+    In_list[rear] = temp
+
+# 최종적으로 문제에서 원하는 합 구하는 함수
+def Greedy_Sum(In_list, In_Count):
+    sum = 0
+    for i in range(0, In_Count+1):
+        for j in range(0, i):
+            sum = sum + In_list[j]
+    return sum
+
+# 입력
+People_Num =  int(input())
+People_Time = list(map(int, input().split()))
+
+# Sorting
+Bouble_Sort(People_Num, People_Time)
+
+# 출력
+print(Greedy_Sum(People_Time, People_Num))
+
+
+''' 백준 : 11399
