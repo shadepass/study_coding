@@ -1,0 +1,59 @@
+#-*- coding:utf-8 -*-
+
+# 후위 표기법 출력을 위해 연산자별로 우선수위 도출
+def Check_Priority(Check):
+    if Check == '(':
+        return 3
+    elif Check == '*' or Check == '/':
+        return 2
+    elif Check == '+' or Check == '-':
+        return 1
+ 
+# 초기화 변수
+
+# 연산자 배열
+Command = ['+', '-', '*', '/', '(', ')']
+# 연산자 넣을 스택 
+Stack = []
+
+# 수행문
+
+# 문자열 입력
+Test_String = list(input())
+
+# 전체 문자열에 대해서 진행
+for i in range(len(Test_String)):
+
+    if Test_String[i] in Command:
+        # 연산자의 경우 스택에 넣기
+        Stack.append(Test_String[i])
+    else:
+        # 문자열은 바로 출력
+        print(f'{Test_String[i]}', end='')
+    
+    # 다음 연산자가 들어오면 연산자 출력 여부 판단
+    if len(Stack)-1 >= 1:
+        # 괄호안에 들어온 경우 '(' 만날 때 까지 출력 수행
+        if Stack[-1] == ')':
+            Stack.pop(-1)
+            while(1):
+                if Stack[-1] == '(':
+                    break
+                else:
+                    print(f'{Stack[-1]}', end='')
+                Stack.pop(-1)
+            Stack.pop(-1)
+        # 현재 연산자가 이전 연산자보다 우선순위가 낮은 경우 연산자 출력
+        # 괄호는 제외 필요
+        elif Check_Priority(Stack[-2]) >= Check_Priority(Stack[-1]) and Stack[-2] != '(':
+            while(len(Stack)-1 >= 1 and Stack[-2] !='(' and Check_Priority(Stack[-2]) >= Check_Priority(Stack[-1])):
+                print(f'{Stack[-2]}', end='')
+                Stack.pop(-2)
+    else:
+        pass
+
+# 모든 문자열 출력후 스택에 남은 연산자 출력
+while(Stack):
+    print(f'{Stack[-1]}', end='')
+    Stack.pop(-1)
+print()
