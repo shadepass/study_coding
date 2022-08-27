@@ -1,0 +1,20 @@
+//baekjoon 2444
+
+number = input()
+count=1
+for i in range(1, int(number)*2, 2):
+    for j in range(int(number)-count, 0, -1):
+        print(" ", end="")
+    for k in range(0, i):
+        print("*", end='')
+    print("")
+    count=count+1
+
+count=int(number)-1
+for i in range(int(number)*2-3, 0, -2):
+    for j in range(count, int(number), 1):
+        print(" ", end="")
+    for k in range(0, i):
+        print("*", end='')
+    print("")
+    count=count-1
