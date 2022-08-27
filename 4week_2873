@@ -1,0 +1,467 @@
+# 백준 2873 롤러코스터 
+
+import sys
+
+# Define
+Result_Value=[]
+Result_Order=[]
+Result_Order2=[]
+
+def Roller_Coaster(Check_Row, Check_Col, Row, Col, Value_List, Check_List, result):
+    Check_List[Check_Row][Check_Col] = 1
+    result = result + Value_List[Check_Row][Check_Col]
+
+    if Check_Row == Row-1 and Check_Col == Col - 1:
+        Check_List[Check_Row][Check_Col]=0
+        Result_Value.append(result)
+        string = ''.join(Result_Order)
+        Result_Order2.append(string)
+        Result_Order.pop()
+        return 
+
+    if 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+        Result_Order.append('R')
+        Roller_Coaster(Check_Row, Check_Col+1, Row, Col, Value_List, Check_List, result)
+    if 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+        Result_Order.append('D')
+        Roller_Coaster(Check_Row+1, Check_Col, Row, Col, Value_List, Check_List, result)      
+    if 0<=Check_Col-1<=Col-1 and Check_List[Check_Row][Check_Col-1]==0:
+        Result_Order.append('L')
+        Roller_Coaster(Check_Row, Check_Col-1, Row, Col, Value_List, Check_List, result)      
+    if 0<=Check_Row-1<=Row-1 and Check_List[Check_Row-1][Check_Col]==0:
+        Result_Order.append('U')
+        Roller_Coaster(Check_Row-1, Check_Col, Row, Col, Value_List, Check_List, result)       
+    Check_List[Check_Row][Check_Col] = 0
+    if Result_Order:
+        Result_Order.pop()
+ 
+# input
+Row, Col = map(int, input().split())
+Point_list = [list(map(int, input().split())) for _ in range(Row)]
+Check_list = [[0]*Col for _ in range(Row)]
+
+# Execute
+
+Roller_Coaster(0, 0, Row, Col, Point_list, Check_list, 0)
+#print(Result_Value)
+#print(Result_Order2)
+#print(Result_Value.index(max(Result_Value)))
+
+print(Result_Order2[Result_Value.index(max(Result_Value))])
+
+import sys
+sys.setrecursionlimit(10**6)
+
+# Define
+Result_Value=[]
+Result_Order=[]
+Result_Order.append('S')
+
+def Find_Min(Row, Col, Value_List):
+    Min_Value = 1500
+    Min_Array = []
+    for Check_Row in range(Row):
+        for Check_Col in range(Col):
+            if Check_Row + Check_Col != 0 and (Check_Row+Check_Col) % 2 != 0:
+                if Value_List[Check_Row][Check_Col] < Min_Value:
+                    Min_Value = Value_List[Check_Row][Check_Col]
+                    if Min_Array:
+                        Min_Array.pop()
+                        Min_Array.pop()
+                        Min_Array.append(Check_Row)
+                        Min_Array.append(Check_Col)
+                    else:
+                        Min_Array.append(Check_Row)
+                        Min_Array.append(Check_Col)
+
+    return Min_Array
+
+def Check_Complete(Row, Col, Check_List):
+    Check_Count = 0
+    for Check_Row in range(Row):
+        for Check_Col in range(Col):
+            if Check_List[Check_Row][Check_Col]==0:
+                Check_Count = Check_Count + 1
+
+    if Check_Count >= 1:
+        return True
+    else:
+        return False
+
+def Even_Eulerian(Row, Col, Value_List, Check_List):
+    Check_Row = 0
+    Check_Col = 0
+    Check_Come = 0
+    Min_Index = Find_Min(Row, Col, Value_List)
+    Check_List[Min_Index[0]][Min_Index[1]]= 1
+#    while(Check_Complete(Row, Col, Check_List)):
+    while(Check_Row != Row-1 or Check_Col != Col-1):
+        Check_List[Check_Row][Check_Col] = 1
+        if 0<=Check_Col-1<=Col-1 and 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1] == 0 and Check_List[Check_Row][Check_Col-1] == 0:
+            if Min_Index[1]<Check_Col:
+                Check_Col= Check_Col-1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('L')
+            else:
+                Check_Col= Check_Col+1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('R')
+        elif Check_Come >=1 or ((Check_Row + 2 == Row-1 or Check_Row+1 == Row-1  or Check_Row == Row-1) and Check_Col == 0 and Result_Order[-1]=='L'):
+            Check_Come = Check_Come +1
+            if 0<=Check_Row-1<=Row-1 and Check_List[Check_Row-1][Check_Col]==0:
+                Check_Row = Check_Row -1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('U')
+            elif 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+                Check_Row = Check_Row + 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('D')
+            elif 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+                Check_Col = Check_Col + 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('R')
+
+        elif 0<=Check_Row-1<=Row-1 and Check_List[Check_Row-1][Check_Col]==0:
+            Check_Row = Check_Row -1
+            Check_List[Check_Row][Check_Col] = 1
+            Result_Order.append('U')
+        elif 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+            Check_Col = Check_Col +1
+            Check_List[Check_Row][Check_Col] = 1
+            Result_Order.append('R')
+        elif 0<=Check_Col-1<=Col-1 and Check_List[Check_Row][Check_Col-1]==0:
+            Check_Col = Check_Col - 1
+            Check_List[Check_Row][Check_Col] = 1
+            Result_Order.append('L')
+        elif 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+            Check_Row = Check_Row + 1
+            Check_List[Check_Row][Check_Col] = 1
+            Result_Order.append('D')
+
+def Odd_Eulerian(Row, Col, Check_List):
+    Check_Row = 0
+    Check_Col = 0
+    if Row % 2 == 0:
+        while(Check_Complete(Row, Col, Check_List)):
+            Check_List[Check_Row][Check_Col] = 1
+            if 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+                Check_Row = Check_Row + 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('D')
+            elif 0<=Check_Row-1<=Row-1 and Check_List[Check_Row-1][Check_Col]==0:
+                Check_Row = Check_Row -1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('U')
+            elif 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+                Check_Col = Check_Col +1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('R')
+
+    else:
+            while(Check_Complete(Row, Col, Check_List)):
+                Check_List[Check_Row][Check_Col] = 1
+                if 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+                    Check_Col = Check_Col +1
+                    Check_List[Check_Row][Check_Col] = 1
+                    Result_Order.append('R')
+                elif 0<=Check_Col-1<=Col-1 and Check_List[Check_Row][Check_Col-1]==0:
+                    Check_Col = Check_Col - 1
+                    Check_List[Check_Row][Check_Col] = 1
+                    Result_Order.append('L')
+                elif 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+                    Check_Row = Check_Row + 1
+                    Check_List[Check_Row][Check_Col] = 1
+                    Result_Order.append('D')
+
+
+    
+# input
+Row, Col = map(int, input().split())
+Value_List = [list(map(int, input().split())) for _ in range(Row)]
+Check_List = [[0]*Col for _ in range(Row)]
+
+# Execute
+if Row % 2 != 0 or Col % 2 != 0:
+    Odd_Eulerian(Row, Col, Check_List)
+else:
+    Even_Eulerian(Row, Col, Value_List, Check_List)
+
+Result = ''.join(Result_Order)
+
+print(Result[1:])
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+import sys
+sys.setrecursionlimit(10**6)
+
+# Define
+Result_Value=[]
+Result_Order=[]
+Result_Order.append('S')
+
+# Finding minimum index
+def Find_Min(Row, Col, Value_List):
+    Min_Value = 1500
+    Min_Array = []
+    for Check_Row in range(Row):
+        for Check_Col in range(Col):
+            if Check_Row + Check_Col != 0 and (Check_Row+Check_Col) % 2 != 0:
+                if Value_List[Check_Row][Check_Col] < Min_Value:
+                    Min_Value = Value_List[Check_Row][Check_Col]
+                    if Min_Array:
+                        Min_Array.pop()
+                        Min_Array.pop()
+                        Min_Array.append(Check_Row)
+                        Min_Array.append(Check_Col)
+                    else:
+                        Min_Array.append(Check_Row)
+                        Min_Array.append(Check_Col)
+
+    return Min_Array
+
+# Case Even + Even
+def Even_Eulerian(Row, Col, Value_List, Check_List):
+    Check_Row = 0
+    Check_Col = 0
+    Check_Come = 0
+    Min_Index = Find_Min(Row, Col, Value_List)
+    Check_List[Min_Index[0]][Min_Index[1]]= 1
+    while(Check_Row != Row-1 or Check_Col != Col-1):
+        Check_List[Check_Row][Check_Col] = 1
+        if 0<=Check_Col-1<=Col-1 and 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1] == 0 and Check_List[Check_Row][Check_Col-1] == 0:
+            #if Min_Index[1]<Check_Col:
+            if Result_Order[-2] == 'L':
+                Check_Col= Check_Col-1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('L')
+            else:
+                Check_Col= Check_Col+1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('R')
+
+        elif Check_Come >=1 or ((Check_Row + 2 == Row-1 or Check_Row+1 == Row-1  or Check_Row == Row-1) and Check_Col == 0 and Result_Order[-1]=='L'):
+            Check_Come = Check_Come +1
+            if 0<=Check_Row-1<=Row-1 and Check_List[Check_Row-1][Check_Col]==0:
+                Check_Row = Check_Row -1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('U')
+            elif 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+                Check_Row = Check_Row + 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('D')
+            elif 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+                Check_Col = Check_Col + 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('R')
+
+        elif 0<=Check_Row-1<=Row-1 and Check_List[Check_Row-1][Check_Col]==0:
+            Check_Row = Check_Row -1
+            Check_List[Check_Row][Check_Col] = 1
+            Result_Order.append('U')
+        elif 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+            Check_Col = Check_Col +1
+            Check_List[Check_Row][Check_Col] = 1
+            Result_Order.append('R')
+        elif 0<=Check_Col-1<=Col-1 and Check_List[Check_Row][Check_Col-1]==0:
+            Check_Col = Check_Col - 1
+            Check_List[Check_Row][Check_Col] = 1
+            Result_Order.append('L')
+        elif 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+            Check_Row = Check_Row + 1
+            Check_List[Check_Row][Check_Col] = 1
+            Result_Order.append('D')
+
+# Case Odd + Odd, Odd + Even, Even + Odd
+def Odd_Eulerian(Row, Col, Check_List):
+    Check_Row = 0
+    Check_Col = 0
+    if Row % 2 == 0:
+        while(Check_Row != Row-1 or Check_Col != Col-1):
+            Check_List[Check_Row][Check_Col] = 1
+            if 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+                Check_Row = Check_Row + 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('D')
+            elif 0<=Check_Row-1<=Row-1 and Check_List[Check_Row-1][Check_Col]==0:
+                Check_Row = Check_Row -1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('U')
+            elif 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+                Check_Col = Check_Col +1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('R')
+
+    else:
+            while(Check_Row != Row-1 or Check_Col != Col-1):
+                Check_List[Check_Row][Check_Col] = 1
+                if 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+                    Check_Col = Check_Col +1
+                    Check_List[Check_Row][Check_Col] = 1
+                    Result_Order.append('R')
+                elif 0<=Check_Col-1<=Col-1 and Check_List[Check_Row][Check_Col-1]==0:
+                    Check_Col = Check_Col - 1
+                    Check_List[Check_Row][Check_Col] = 1
+                    Result_Order.append('L')
+                elif 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+                    Check_Row = Check_Row + 1
+                    Check_List[Check_Row][Check_Col] = 1
+                    Result_Order.append('D')
+
+# input
+Row, Col = map(int, input().split())
+Value_List = [list(map(int, input().split())) for _ in range(Row)]
+Check_List = [[0]*Col for _ in range(Row)]
+
+# Execute _ Devide by even and odd
+if Row % 2 != 0 or Col % 2 != 0:
+    Odd_Eulerian(Row, Col, Check_List)
+else:
+    Even_Eulerian(Row, Col, Value_List, Check_List)
+
+# Print
+Result = ''.join(Result_Order)
+print(Result[1:])
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+import sys
+sys.setrecursionlimit(10**6)
+
+# Define
+Result_Value=[]
+Result_Order=[]
+
+# Finding minimum index
+def Find_Min(Row, Col, Value_List):
+    Min_Value = 1500
+    Min_Array = []
+    for Check_Row in range(Row):
+        for Check_Col in range(Col):
+            if Check_Row + Check_Col != 0 and (Check_Row+Check_Col) % 2 != 0:
+                if Value_List[Check_Row][Check_Col] < Min_Value:
+                    Min_Value = Value_List[Check_Row][Check_Col]
+                    if Min_Array:
+                        Min_Array.pop()
+                        Min_Array.pop()
+                        Min_Array.append(Check_Row)
+                        Min_Array.append(Check_Col)
+                    else:
+                        Min_Array.append(Check_Row)
+                        Min_Array.append(Check_Col)
+
+    return Min_Array
+
+
+# Case Even + Even
+def Even_Eulerian(Row, Col, Value_List, Check_List):
+    Check_Row = 0
+    Check_Col = 0
+    Check_Come = False
+    Check_Up_Down = False
+    Min_Index = Find_Min(Row, Col, Value_List)
+    Check_List[Min_Index[0]][Min_Index[1]]= 1
+    
+    # 최소값이 존재하는 행을 두 줄로 나누어서 해당 열만 지그재그로 진행
+    while(Check_Row != Row-1 or Check_Col != Col-1):
+        Check_List[Check_Row][Check_Col] = 1
+        if ((Min_Index[0]%2 == 0 and Check_Row == Min_Index[0]) or (Min_Index[0]%2 != 0 and Check_Row +1 == Min_Index[0])) and Check_Col == 0:
+            Check_Come = True
+            for i in range(Col):
+                if i != 0:
+                    Result_Order.append('R')
+                if i != Min_Index[1]:
+                    if Check_Up_Down:
+                        Result_Order.append('U')
+                    else:
+                        Result_Order.append('D')
+                    Check_Up_Down = ~Check_Up_Down
+            Check_Row = Check_Row + 1
+            Check_Col = Col-1
+            if Check_Row != Row-1 or Check_Col != Col-1:
+                Check_Row = Check_Row+1
+                Check_List[Check_Row][Check_Col]=1
+                Result_Order.append('D')
+
+        # 지그재그로 진행 한 이후에는 오른쪽에서 끝나기 때문에 왼쪽으로 먼저 진행
+        elif Check_Come:
+            if 0<=Check_Col-1<=Col-1 and Check_List[Check_Row][Check_Col-1]==0:
+                Check_Col = Check_Col - 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('L')
+            elif 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+                Check_Col = Check_Col +1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('R')
+            elif 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+                Check_Row = Check_Row + 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('D')
+        # 일반적인 경우 오른쪽 아래 왼쪽 순으로 진행
+        else:
+            if 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+                Check_Col = Check_Col +1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('R')
+            elif 0<=Check_Col-1<=Col-1 and Check_List[Check_Row][Check_Col-1]==0:
+                Check_Col = Check_Col - 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('L')
+            elif 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+                Check_Row = Check_Row + 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('D')
+
+# Case Odd + Odd, Odd + Even, Even + Odd
+def Odd_Eulerian(Row, Col, Check_List):
+    Check_Row = 0
+    Check_Col = 0
+
+    # 열이 짝수인 경우 열 기준으로 지그재그 순서로 전체 부분 진행
+    if Row % 2 == 0:
+        while(Check_Row != Row-1 or Check_Col != Col-1):
+            Check_List[Check_Row][Check_Col] = 1
+            if 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+                Check_Row = Check_Row + 1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('D')
+            elif 0<=Check_Row-1<=Row-1 and Check_List[Check_Row-1][Check_Col]==0:
+                Check_Row = Check_Row -1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('U')
+            elif 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+                Check_Col = Check_Col +1
+                Check_List[Check_Row][Check_Col] = 1
+                Result_Order.append('R')
+
+    # 열이 짝수가 아닌 경우 행을 기준으로 지그재그 순서로 전체 부분 진행
+    else:
+            while(Check_Row != Row-1 or Check_Col != Col-1):
+                Check_List[Check_Row][Check_Col] = 1
+                if 0<=Check_Col+1<=Col-1 and Check_List[Check_Row][Check_Col+1]==0:
+                    Check_Col = Check_Col +1
+                    Check_List[Check_Row][Check_Col] = 1
+                    Result_Order.append('R')
+                elif 0<=Check_Col-1<=Col-1 and Check_List[Check_Row][Check_Col-1]==0:
+                    Check_Col = Check_Col - 1
+                    Check_List[Check_Row][Check_Col] = 1
+                    Result_Order.append('L')
+                elif 0<=Check_Row+1<=Row-1 and Check_List[Check_Row+1][Check_Col]==0:
+                    Check_Row = Check_Row + 1
+                    Check_List[Check_Row][Check_Col] = 1
+                    Result_Order.append('D')
+
+# input
+Row, Col = map(int, input().split())
+Value_List = [list(map(int, input().split())) for _ in range(Row)]
+Check_List = [[0]*Col for _ in range(Row)]
+
+# Execute _ Devide by even and odd
+if Row % 2 != 0 or Col % 2 != 0:
+    Odd_Eulerian(Row, Col, Check_List)
+else:
+    Even_Eulerian(Row, Col, Value_List, Check_List)
+
+# Print
+Result = ''.join(Result_Order)
+print(Result)
