@@ -1,22 +1,28 @@
 #-*- coding:utf-8 -*-
 from collections import deque
 
+# 입력 받은 간선으로 테이블로 만들기
 def Make_table(Node_Num, Edge_Num, Edge):
     Node = Node_Num + 1
     Table = [[0 for _ in range(Node)] for _ in range(Node)]
-
+    
+    #인덱스 1부터 시작하도록 Table 생성
     for i in range(Edge_Num):
         Table[Edge[i][0]][Edge[i][1]] = 1
         Table[Edge[i][1]][Edge[i][0]] = 1
 
     return Table
 
-def BFS(Edge_Table, Start_Node, Node_Num):
+# BFS 코드
+def BFS(Edge_Table, Check_Node, Node_Num):
+    # Linked_list로 구현
+    # 처음 노드 넣고 시작
     Linked_list = deque()
-    Linked_list.append(Start_Node)
+    Linked_list.append(Check_Node)
     Check_table = [0] * (Node_Num + 1)
-    Check_node = Start_Node
 
+    # 구현된 리스트를 돌면서 넣은 노드와 연결된 모드 노드 리스트에 넣으면서
+    # BFS 구현
     while Linked_list:
         Check_node = Linked_list.popleft()
         Check_table[Check_node] = 1
@@ -27,22 +33,30 @@ def BFS(Edge_Table, Start_Node, Node_Num):
                 Check_table[i]=1
     print(f'')
 
-def DFS(Edge_Table, Start_Node, Node_Num):
+# DFS 코드
+def DFS(Edge_Table, Check_Node, Node_Num):
+    # Stack으로 구현
+    # 첫 노드 넣고 출력
     Stack = []
-    Stack.append(Start_Node)
-    print(f'{Start_Node} ', end='')
+    Stack.append(Check_Node)
+    print(f'{Check_Node} ', end='')
     Check_table = [0] * (Node_Num +1)
     Check_table[Start_Node] = 1
-    Check_Node = Start_Node
 
+    # 스택을 돌면서 만난 노드와 가장 가까운 노드를 스택에 넣고
+    # 해당 스택의 최상단을 시작으로 파고파고 들어가고
+    # 인접한 노드가 없을 때 까지 수행
     while Stack:
         for i in range(Node_Num+1):
             if Edge_Table[Check_Node][i] and Check_table[i]==0:
-                print(f'{i}', end='')
+                print(f'{i} ', end='')
+                Check_table[i] = 1
                 Stack.append(i)
                 break
-        Stack.pop()
-        Check_Node = Stack(-1)
+            elif i == Node_Num:
+                Stack.pop()
+        if Stack:
+            Check_Node = Stack[-1]
 
     print(f'')
 
@@ -55,7 +69,4 @@ Edge = [list(map(int, input().split())) for _ in range(Edge_Num)]
 Edge_Table = Make_table(Node_Num, Edge_Num, Edge)
 
 DFS(Edge_Table, Start_Node, Node_Num)
-#BFS(Edge_Table, Start_Node, Node_Num)
-
-
-
+BFS(Edge_Table, Start_Node, Node_Num)
