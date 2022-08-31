@@ -3,21 +3,33 @@ from collections import deque
 
 def Find_Way_BFS():
     global Row, Col, Maze
+
+    #BFS 구현을 위해 큐 활용
     que = deque()
+
+    #Count_input : 현재 턴에서 큐에 삽입된 노드
+    #Count_road : 턴마다 더해져 결과적으로 최소 값을 도출
+    #Count_this_time : 각 턴마다 이전에 들어온 노드 수 만큼 pop을 해야하는데 해당 수를 가지고 있음
     Count_input, Count_road, Count_this_time = [0, 1, 1]
-    Count_input = 0
-    Count_road = 1
     Check_Maze = [[0 for _ in range(Col)] for _ in range(Row)]   
+    
+    #시작은 0, 0에서 시작
     que.append([0, 0])
     Check_Maze[0][0] = 1
     current_row, current_col = [0, 0]
 
 
-    while current_row != Row - 1 or current_col != Col - 1:
+    while 1:
+        # 각 턴마다 수행해야하는 Couint_this_time 만큼 POP 수행
         for _ in range(Count_this_time):       
+            # 이전에 들어있던 노드를 current로 설정
+
             [current_row, current_col] = que.popleft()
+            # 종료조건 도달 시 리턴
+
             if current_row == Row -1 and current_col == Col-1:
                 return Count_road
+            # 사방을 돌면서 갈 수 있는 노드를 큐에 삽입
 
             if current_row+1 < Row and Maze[current_row + 1][current_col] and Check_Maze[current_row+1][current_col] == 0:
                 que.append([current_row+1, current_col])
@@ -38,14 +50,13 @@ def Find_Way_BFS():
                 que.append([current_row, current_col-1])
                 Check_Maze[current_row][current_col-1] = 1
                 Count_input += 1
-
+        # 다음 턴에 수행하는 개수를 지정
         Count_this_time = Count_input
         Count_input = 0
         Count_road += 1
     return Count_road
-       
-
-
+      
+# 입력 
 Row, Col = map(int, input().split())
 Maze = [list(map(int, input())) for _ in range(Row)]
 
