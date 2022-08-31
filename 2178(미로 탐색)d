@@ -1,0 +1,52 @@
+#-*- coding:utf-8 -*-
+from collections import deque
+
+def Find_Way_BFS():
+    global Row, Col, Maze
+    que = deque()
+    Count_input, Count_road, Count_this_time = [0, 1, 1]
+    Count_input = 0
+    Count_road = 1
+    Check_Maze = [[0 for _ in range(Col)] for _ in range(Row)]   
+    que.append([0, 0])
+    Check_Maze[0][0] = 1
+    current_row, current_col = [0, 0]
+
+
+    while current_row != Row - 1 or current_col != Col - 1:
+        for _ in range(Count_this_time):       
+            [current_row, current_col] = que.popleft()
+            if current_row == Row -1 and current_col == Col-1:
+                return Count_road
+
+            if current_row+1 < Row and Maze[current_row + 1][current_col] and Check_Maze[current_row+1][current_col] == 0:
+                que.append([current_row+1, current_col])
+                Check_Maze[current_row+1][current_col] = 1
+                Count_input += 1
+                
+            if current_col+1 < Col and Maze[current_row][current_col+1] and Check_Maze[current_row][current_col+1] == 0:
+                que.append([current_row, current_col+1])
+                Check_Maze[current_row][current_col+1] = 1
+                Count_input += 1
+
+            if current_row-1 >=0  and Maze[current_row - 1][current_col] and Check_Maze[current_row - 1][current_col] == 0:
+                que.append([current_row-1, current_col])
+                Check_Maze[current_row-1][current_col] = 1
+                Count_input += 1
+
+            if current_col-1 >= 0 and Maze[current_row][current_col-1] and Check_Maze[current_row][current_col-1] == 0:
+                que.append([current_row, current_col-1])
+                Check_Maze[current_row][current_col-1] = 1
+                Count_input += 1
+
+        Count_this_time = Count_input
+        Count_input = 0
+        Count_road += 1
+    return Count_road
+       
+
+
+Row, Col = map(int, input().split())
+Maze = [list(map(int, input())) for _ in range(Row)]
+
+print(f'{Find_Way_BFS()}')
