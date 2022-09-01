@@ -1,2 +1,46 @@
 #-*- coding:utf-8 -*-
 from collections import deque
+
+def Make_Family():
+    global Relation, Family_group, People_Num
+    # 한 부모의 형제들을 표시하기 위한 리스트
+    Brother = []
+    
+    # 부모 자식을 값 1로 연결
+    for i in range(len(Relation)):
+        Family_group[Relation[i][0]][Relation[i][1]] = 1
+        Family_group[Relation[i][1]][Relation[i][0]] = 1
+    
+    # 상단에서 표시하였던 한 부모의 자식들을 리스트로 받은 뒤
+    # 각 리스트에 들어있는 번호들 끼리 2의 값으로 연결
+    for i in range(People_Num + 1):
+        for j in range(People_Num + 1):
+            if Family_group[i][j] == 1:
+                Brother.append(j)
+        while Brother:
+            for k in range(len(Brother)-1):
+                Family_group[Brother[len(Brother)-1]][Brother[k]] = 2
+                Family_group[Brother[k]][Brother[len(Brother)-1]] = 2
+            Brother.pop()
+
+    print(f'{Family_group}')
+
+ 
+
+def Calculate_Relation():
+    print
+
+
+
+# 전체 가족 수, 비교할 가족, 부모관계, 부모관계 입력 수행
+People_Num = int(input())
+People1, People2 = map(int, input().split())
+Relation_Num = int(input())
+Relation = [list(map(int, input().split())) for _ in range(Relation_Num)]
+
+# 'Faimly_group' = 전체 가족들을 부모자식은 1, 형제는 2로 연결
+Family_group = [[0 for _ in range(People_Num+1)] for _ in range(People_Num+1)]
+
+Make_Family()
+
+Calculate_Relation()
