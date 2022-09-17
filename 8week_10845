@@ -55,3 +55,66 @@ Order_Number = int(sys.stdin.readline())
 order = [sys.stdin.readline().split() for _ in range(Order_Number)]
 
 Excute()
+
+---------------------------------------------------------------------------
+#-*- coding:utf-8 -*-
+from collections import deque
+import sys
+
+Order_Number = int(sys.stdin.readline())
+Count = 0
+que = deque()
+
+for _ in range(Order_Number):
+
+    order = sys.stdin.readline().split()
+    if order[0] == 'push':
+        que.append(int(order[1]))
+
+    elif order[0] == 'pop':
+        if len(que)==0:
+            Count = -1
+        else:
+            Count = que.popleft()
+        print(f'{Count}')
+
+    elif order[0] == 'size':
+        Count = len(que)
+        print(f'{Count}')
+
+    elif order[0] == 'empty':
+        if len(que) == 0:
+            Count = 1
+        else:
+            Count = 0
+        print(f'{Count}')
+
+    elif order[0] == 'front':
+        if len(que)==0:
+            Count = -1
+        else:
+            Count = que[0]
+        print(f'{Count}')
+
+    elif order[0] == 'back':
+        if len(que)==0:
+            Count = -1
+        else:
+            Count = que[-1]
+        print(f'{Count}')
+
+
+#order = [sys.stdin.readline().split() for _ in range(Order_Number)]
+
+####################################################################################################################
+####################################################################################################################
+
+1. 파이썬에서는 무조건 sys.stdin.readline()으로 읽어라
+https://www.acmicpc.net/problem/15552
+백준 15552번 참고 
+
+2. 무엇인가를 출력할 때 꼭 전부를 받고 다시 전부를 다시 훑을 필요없다.
+   내가 테스트 할 때 결과는 라인 하나하나 나와서 이상할 수 있지만
+   출력만 보면 맞는 답이 된다!
+   시간적으로는 이번 문제에서는 5배나 차이난다.
+   
