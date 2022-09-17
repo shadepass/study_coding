@@ -1,50 +1,57 @@
 #-*- coding:utf-8 -*-
 from collections import deque
+import sys
 
 def Excute():
     global Order_Number, order
-    Current_order = order[0][0]
     Count = 0
     que = deque()
+    
+    while order:
+        if order[0][0] == 'push':
+            que.append(int(order[0][1]))
+            order = order[1:]
 
-    if Current_order == 'push':
-        que.append(int(order[0][0]))
+        elif order[0][0] == 'pop':
+            if len(que)==0:
+                Count = -1
+            else:
+                Count = que.popleft()
+            print(f'{Count}')
+            order = order[1:]
 
-    elif Current_order == 'pop':
-        if len(que)==0:
-            Count = -1
-        else:
-            Count = que.popleft()
-        print(f'{Count}')
+        elif order[0][0] == 'size':
+            Count = len(que)
+            print(f'{Count}')
+            order = order[1:]
 
-    elif Current_order == 'size':
-        Count = len(que)
-        print(f'{Count}')
+        elif order[0][0] == 'empty':
+            if len(que) == 0:
+                Count = 1
+            else:
+                Count = 0
+            print(f'{Count}')
+            order = order[1:]
 
-    elif Current_order == 'empty':
-        if len(que) == 0:
-            Count = 1
-        else:
-            Count = 0
-        print(f'{Count}')
+        elif order[0][0] == 'front':
+            if len(que)==0:
+                Count = -1
+            else:
+                Count = que[0]
+            print(f'{Count}')
+            order = order[1:]
 
-    elif Current_order == 'front':
-        if len(que)==0:
-            Count = -1
-        else:
-            Count = que.popleft()
-        print(f'{Count}')
+        elif order[0][0] == 'back':
+            if len(que)==0:
+                Count = -1
+            else:
+                Count = que[-1]
+            print(f'{Count}')
+            order = order[1:]
 
-    elif Current_order == 'back':
-        if len(que)==0:
-            Count = -1
-        else:
-            Count = que.pop()
-        print(f'{Count}')
 
-Order_Number = int(input())
+Order_Number = int(sys.stdin.readline())
 
-order = [list(input().split()) for _ in range(Order_Number)]
+order = [sys.stdin.readline().split() for _ in range(Order_Number)]
 
 Excute()
-
