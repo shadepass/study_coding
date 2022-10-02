@@ -1,5 +1,6 @@
 #-*- coding:utf-8 -*-
 from collections import deque
+import sys
 
 def Find_Way_BFS():
     global Row, Col, Maze
@@ -57,7 +58,7 @@ def Find_Way_BFS():
     return Count_road
       
 # 입력 
-Row, Col = map(int, input().split())
-Maze = [list(map(int, input())) for _ in range(Row)]
+Row, Col = map(int, sys.stdin.readline().split())
+Maze = [list(map(int, sys.stdin.readline().rstrip())) for _ in range(Row)]
 
 print(f'{Find_Way_BFS()}')
