@@ -26,23 +26,23 @@ def Check_Continue(Graph):
     #RB_Check[1][2] = B의 Left RB_Check[1][3] = B의 Up
 
     #Check Red 
-    if RB[0][1]+1 < Column and Graph[RB[0][0]][RB[0][1]+1] != '#' and Graph[RB[0][0]][RB[0][1]+1] != 'B':
+    if RB[0][1]+1 < Column and Graph[RB[0][0]][RB[0][1]+1] not in ['#', 'B']:
         RB_Check[0][0] = 1
-    if RB[0][0]+1 < Row and Graph[RB[0][0]+1][RB[0][1]] != '#' and Graph[RB[0][0]+1][RB[0][1]] != 'B':
+    if RB[0][0]+1 < Row and Graph[RB[0][0]+1][RB[0][1]] not in ['#', 'B']:
         RB_Check[0][1] = 1
-    if RB[0][1]-1 >= 0 and Graph[RB[0][0]][RB[0][1]-1] != '#' and Graph[RB[0][0]][RB[0][1]-1] != 'B':
+    if RB[0][1]-1 >= 0 and Graph[RB[0][0]][RB[0][1]-1] not in ['#', 'B']:
         RB_Check[0][2] = 1
-    if RB[0][0]-1 >=0 and Graph[RB[0][0]-1][RB[0][1]] != '#' and Graph[RB[0][0]-1][RB[0][1]] != 'B':
+    if RB[0][0]-1 >=0 and Graph[RB[0][0]-1][RB[0][1]] not in ['#', 'B']:
         RB_Check[0][3] = 1
 
     #Check Blue
-    if RB[1][1]+1 < Column and Graph[RB[1][0]][RB[1][1]+1] != '#' and Graph[RB[1][0]][RB[1][1]+1] != 'R':
+    if RB[1][1]+1 < Column and Graph[RB[1][0]][RB[1][1]+1] not in ['#', 'R']:
         RB_Check[1][0] = 1
-    if RB[1][0]+1 < Row and Graph[RB[1][0]+1][RB[1][1]] != '#' and Graph[RB[1][0]+1][RB[1][1]] != 'R':
+    if RB[1][0]+1 < Row and Graph[RB[1][0]+1][RB[1][1]] not in  ['#', 'R']:
         RB_Check[1][1] = 1
-    if RB[1][1]-1 >= 0 and Graph[RB[1][0]][RB[1][1]-1] != '#' and Graph[RB[1][0]][RB[1][1]-1] != 'R':
+    if RB[1][1]-1 >= 0 and Graph[RB[1][0]][RB[1][1]-1] not in ['#', 'R']:
         RB_Check[1][2] = 1
-    if RB[1][0]-1 >=0 and Graph[RB[1][0]-1][RB[1][0]] != '#' and Graph[RB[1][0]-1][RB[1][1]] != 'R':
+    if RB[1][0]-1 >=0 and Graph[RB[1][0]-1][RB[1][1]] not in ['#', 'R']:
         RB_Check[1][3] = 1
 
     return RB_Check
@@ -51,11 +51,9 @@ def Check_Continue(Graph):
 def Go(Check_Graph, Direction):
     global Row, Column, RB
     Graph = copy.deepcopy(Check_Graph)
-    Current_Red_Row = RB[0][0]
-    Current_Red_Column = RB[0][1]
-    Current_Blue_Row = RB[1][0]
-    Current_Blue_Column = RB[1][1]
-    Red_Row=Current_Red_Row
+    Current_Red_Row, Current_Red_Column = RB[0]
+    Current_Blue_Row, Current_Blue_Column = RB[1]
+    Red_Row = Current_Red_Row
     Red_Column = Current_Red_Column
     Blue_Row = Current_Blue_Row
     Blue_Column = Current_Blue_Column
@@ -70,8 +68,9 @@ def Go(Check_Graph, Direction):
         Blue_Column += Direction[1]
 
         if 0 <= Red_Row < Row and 0<= Red_Column < Column and finish[0][0] != 1 and finish[0][1] != 1:
-            if Graph[Red_Row][Red_Column] == '.' or (0<=Red_Row+Direction[0] < Row and 0<=Red_Column +Direction[1] < Column and Graph[Red_Row][Red_Column] == 'B' and Graph[Red_Row+Direction[0]][Red_Column+Direction[1]] == '.'):
+            if Graph[Red_Row][Red_Column] in ['X', '.'] or (0<=Red_Row+Direction[0] < Row and 0<=Red_Column +Direction[1] < Column and Graph[Red_Row][Red_Column] == 'B' and Graph[Red_Row+Direction[0]][Red_Column+Direction[1]] == '.'):
                 if Graph[Current_Red_Row][Current_Red_Column] != 'B':
+                    #Graph[Current_Red_Row][Current_Red_Column] = 'X'
                     Graph[Current_Red_Row][Current_Red_Column] = '.'
                 Graph[Red_Row][Red_Column] = 'R'
             elif Graph[Red_Row][Red_Column] == 'O':
@@ -81,8 +80,9 @@ def Go(Check_Graph, Direction):
                 finish[0][1] = 1
 
         if 0<= Blue_Row <Row and 0<= Blue_Column < Column and finish[1][0] != 1 and finish[1][1] != 1:
-            if  Graph[Blue_Row][Blue_Column] == '.' or (0<Blue_Row+Direction[0] <Row and 0<= Blue_Column+Direction[1] < Column and Graph[Blue_Row][Blue_Column] == 'R' and Graph[Blue_Row+Direction[0]][Blue_Column+DIrection[1]] == '.'):
+            if  Graph[Blue_Row][Blue_Column] in ['X', '.'] or (0<Blue_Row+Direction[0] <Row and 0<= Blue_Column+Direction[1] < Column and Graph[Blue_Row][Blue_Column] == 'R' and Graph[Blue_Row+Direction[0]][Blue_Column+Direction[1]] == '.'):
                 if Graph[Current_Blue_Row][Current_Blue_Column] != 'R':
+                    #Graph[Current_Blue_Row][Current_Blue_Column] = 'X'
                     Graph[Current_Blue_Row][Current_Blue_Column] = '.'
                 Graph[Blue_Row][Blue_Column] = 'B'
             elif Graph[Blue_Row][Blue_Column] == 'O':
