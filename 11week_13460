@@ -176,3 +176,5 @@ print(f'{Marble_Escape()}')
 
 3. 배열 초기화든 매개변수로 배열 받을 때든 파이썬은 주소갑승ㄹ 그대로 가져오기 때문에 
    for 문으로 복사하거나 copy, deepcopy 사용해야한다.
+
+https://bgspro.tistory.com/70
