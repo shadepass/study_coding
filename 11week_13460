@@ -51,10 +51,14 @@ def Check_Continue(Graph):
 def Go(Check_Graph, Direction):
     global Row, Column, RB
     Graph = copy.deepcopy(Check_Graph)
-    Red_Row = RB[0][0]
-    Red_Column = RB[0][1]
-    Blue_Row = RB[1][0]
-    Blue_Column = RB[1][1]
+    Current_Red_Row = RB[0][0]
+    Current_Red_Column = RB[0][1]
+    Current_Blue_Row = RB[1][0]
+    Current_Blue_Column = RB[1][1]
+    Red_Row=Current_Red_Row
+    Red_Column = Current_Red_Column
+    Blue_Row = Current_Blue_Row
+    Blue_Column = Current_Blue_Column
 
     # 0번은 구멍에 빠짐, 1번은 벽에 만남
     finish = [[0]*2 for _ in range(2)]
@@ -63,26 +67,26 @@ def Go(Check_Graph, Direction):
         Red_Row += Direction[0]
         Red_Column += Direction[1]
         Blue_Row += Direction[0]
-        Blue_Column + Direction[1]
+        Blue_Column += Direction[1]
 
-        if Red_Column < Column and finish[0][0] != 1 and finish[0][1] != 1:
-            if Graph[Red_Row][Red_Column] == '.' or (Red_Column +1 < Column and Graph[Red_Row][Red_Column] == 'B' and Graph[Red_Row][Red_Column+1] == '.'):
-                if Graph[Red_Row][Red_Column-1] != 'B':
-                    Graph[Red_Row][Red_Column-1] = '.'
+        if 0 <= Red_Row < Row and 0<= Red_Column < Column and finish[0][0] != 1 and finish[0][1] != 1:
+            if Graph[Red_Row][Red_Column] == '.' or (0<=Red_Row+Direction[0] < Row and 0<=Red_Column +Direction[1] < Column and Graph[Red_Row][Red_Column] == 'B' and Graph[Red_Row+Direction[0]][Red_Column+Direction[1]] == '.'):
+                if Graph[Current_Red_Row][Current_Red_Column] != 'B':
+                    Graph[Current_Red_Row][Current_Red_Column] = '.'
                 Graph[Red_Row][Red_Column] = 'R'
             elif Graph[Red_Row][Red_Column] == 'O':
-                Graph[Red_Row][Red_Column-1] = '.'
+                Graph[Current_Red_Row][Current_Red_Column] = '.'
                 finish[0][0] = 1
             else:
                 finish[0][1] = 1
 
-        if Blue_Column < Column and finish[1][0] != 1 and finish[1][1] != 1:
-            if  Graph[Blue_Row][Blue_Column] == '.' or (Blue_Column+1 < Column and Graph[Blue_Row][Blue_Column] == 'R' and Graph[Blue_Row][Blue_Column+1] == '.'):
-                if Graph[Blue_Row][Blue_Column-1] != 'R':
-                    Graph[Blue_Row][Blue_Column-1] = '.'
+        if 0<= Blue_Row <Row and 0<= Blue_Column < Column and finish[1][0] != 1 and finish[1][1] != 1:
+            if  Graph[Blue_Row][Blue_Column] == '.' or (0<Blue_Row+Direction[0] <Row and 0<= Blue_Column+Direction[1] < Column and Graph[Blue_Row][Blue_Column] == 'R' and Graph[Blue_Row+Direction[0]][Blue_Column+DIrection[1]] == '.'):
+                if Graph[Current_Blue_Row][Current_Blue_Column] != 'R':
+                    Graph[Current_Blue_Row][Current_Blue_Column] = '.'
                 Graph[Blue_Row][Blue_Column] = 'B'
             elif Graph[Blue_Row][Blue_Column] == 'O':
-                Graph[Blue_Row][Blue_Column-1] = '.'
+                Graph[Current_Blue_Row][Current_Blue_Column] = '.'
                 finish[1][0] = 1
             else:
                 finish[1][1] = 1
@@ -95,144 +99,12 @@ def Go(Check_Graph, Direction):
             return Graph, 'Fail'
         elif finish[0][1] == 1 and finish[1][1] == 1:
             return Graph, 'Continue'
+
+        Current_Red_Row = Red_Row
+        Current_Red_Column = Red_Column 
+        Current_Blue_Row= Blue_Row 
+        Current_Blue_Column = Blue_Column
    
-def Go_Left(Check_Graph):
-    global Row, Column, RB
-    Graph = copy.deepcopy(Check_Graph)
-    Red_Row = RB[0][0]
-    Red_Column = RB[0][1]
-    Blue_Row = RB[1][0]
-    Blue_Column = RB[1][1]
-
-    # 0번은 구멍에 빠짐, 1번은 벽에 만남
-    finish = [[0]*2 for _ in range(2)]
-
-    while(1):
-        Red_Column -= 1
-        Blue_Column -= 1
-        if Red_Column >= 0 and finish[0][0] != 1 and finish[0][1] != 1:
-            if Graph[Red_Row][Red_Column] == '.' or (Red_Column - 1 >= 0 and Graph[Red_Row][Red_Column] == 'B' and Graph[Red_Row][Red_Column-1] == '.'):
-                if Graph[Red_Row][Red_Column+1] != 'B':
-                    Graph[Red_Row][Red_Column+1] = '.'
-                Graph[Red_Row][Red_Column] = 'R'
-            elif Graph[Red_Row][Red_Column] == 'O':
-                Graph[Red_Row][Red_Column+1] = '.'
-                finish[0][0] = 1
-            else:
-                finish[0][1] = 1
-
-        if Blue_Column >= 0 and finish[1][0] != 1 and finish[1][1] != 1:
-            if Graph[Blue_Row][Blue_Column] == '.' or (Blue_Column- 1 >= 0 and Graph[Blue_Row][Blue_Column] == 'R' and Graph[Blue_Row][Blue_Column-1] == '.'):
-                if Graph[Blue_Row][Blue_Column+1] != 'R':
-                    Graph[Blue_Row][Blue_Column+1] = '.'    
-                Graph[Blue_Row][Blue_Column] = 'B'
-            elif Graph[Blue_Row][Blue_Column] == 'O':
-                Graph[Blue_Row][Blue_Column+1] = '.'
-                finish[1][0] = 1
-            else:
-                finish[1][1] = 1
-
-        if finish[0][0] == 1 and finish[1][0] == 1:
-            return Graph, 'Fail'
-        elif finish[0][0] == 1 and finish[1][1] == 1:
-            return Graph, 'Success'
-        elif finish[0][1] ==1 and finish[1][0] == 1:
-            return Graph, 'Fail'
-        elif finish[0][1] == 1 and finish[1][1] == 1:
-            return Graph, 'Continue'
- 
-def Go_Up(Check_Graph):
-    global Row, Column, RB
-    Graph = copy.deepcopy(Check_Graph)
-    Red_Row = RB[0][0]
-    Red_Column = RB[0][1]
-    Blue_Row = RB[1][0]
-    Blue_Column = RB[1][1]
-
-    # 0번은 구멍에 빠짐, 1번은 벽에 만남
-    finish = [[0]*2 for _ in range(2)]
-
-    while(1):
-        Red_Row -= 1
-        Blue_Row -= 1
-        if Red_Row >= 0 and finish[0][0] != 1 and finish[0][1] != 1:
-            if Graph[Red_Row][Red_Column] == '.' or (Red_Row - 1 >= 0 and Graph[Red_Row][Red_Column] == 'B' and Graph[Red_Row-1][Red_Column] == '.'):
-                if Graph[Red_Row+1][Red_Column] != 'B':
-                    Graph[Red_Row+1][Red_Column] = '.'
-                Graph[Red_Row][Red_Column] = 'R'
-            elif Graph[Red_Row][Red_Column] == 'O':
-                Graph[Red_Row+1][Red_Column] = '.'
-                finish[0][0] = 1
-            else:
-                finish[0][1] = 1
-
-        if Blue_Row >= 0 and finish[1][0] != 1 and finish[1][1] != 1:
-            if  Graph[Blue_Row][Blue_Column] == '.' or (Blue_Row- 1 >= 0 and Graph[Blue_Row][Blue_Column] == 'R' and Graph[Blue_Row-1][Blue_Column] == '.'):
-                if Graph[Blue_Row+1][Blue_Column] != 'R':
-                    Graph[Blue_Row+1][Blue_Column] = '.'
-                Graph[Blue_Row][Blue_Column] = 'B'
-            elif Graph[Blue_Row][Blue_Column] == 'O':
-                Graph[Blue_Row+1][Blue_Column] = '.'
-                finish[1][0] = 1
-            else:
-                finish[1][1] = 1
-
-        if finish[0][0] == 1 and finish[1][0] == 1:
-            return Graph, 'Fail'
-        elif finish[0][0] == 1 and finish[1][1] == 1:
-            return Graph, 'Success'
-        elif finish[0][1] ==1 and finish[1][0] == 1:
-            return Graph, 'Fail'
-        elif finish[0][1] == 1 and finish[1][1] == 1:
-            return Graph, 'Continue'
-
-def Go_Down(Check_Graph):
-    global Row, Column, RB
-    Graph = copy.deepcopy(Check_Graph)
-    Red_Row = RB[0][0]
-    Red_Column = RB[0][1]
-    Blue_Row = RB[1][0]
-    Blue_Column = RB[1][1]
-
-    # 0번은 구멍에 빠짐, 1번은 벽에 만남
-    finish = [[0]*2 for _ in range(2)]
-
-    while(1):
-        Red_Row += 1
-        Blue_Row += 1
-        if Red_Row < Row and finish[0][0] != 1 and finish[0][1] != 1:
-            if Graph[Red_Row][Red_Column] == '.' or (Red_Row + 1 < Row and Graph[Red_Row][Red_Column] == 'B' and Graph[Red_Row+1][Red_Column] == '.'):
-                if Graph[Red_Row-1][Red_Column] != 'B':
-                    Graph[Red_Row-1][Red_Column] = '.'           
-                Graph[Red_Row][Red_Column] = 'R'
-            elif Graph[Red_Row][Red_Column] == 'O':
-                Graph[Red_Row-1][Red_Column] = '.'
-                finish[0][0] = 1
-            else:
-                finish[0][1] = 1
-
-        if Blue_Row < Row and finish[1][0] != 1 and finish[1][1] != 1:
-            if  Graph[Blue_Row][Blue_Column] == '.' or (Blue_Row+1 < Row and Graph[Blue_Row][Blue_Column] == 'R' and Graph[Blue_Row+1][Blue_Column] == '.'):
-                if Graph[Blue_Row-1][Blue_Column] != 'R':
-                    Graph[Blue_Row-1][Blue_Column] = '.'                        
-                Graph[Blue_Row][Blue_Column] = 'B'
-            elif Graph[Blue_Row][Blue_Column] == 'O':
-                Graph[Red_Row-1][Red_Column] = '.'
-                finish[1][0] = 1
-            else:
-                finish[1][1] = 1
-
-        if finish[0][0] == 1 and finish[1][0] == 1:
-            return Graph, 'Fail'
-        elif finish[0][0] == 1 and finish[1][1] == 1:
-            return Graph, 'Success'
-        elif finish[0][1] ==1 and finish[1][0] == 1:
-            return Graph, 'Fail'
-        elif finish[0][1] == 1 and finish[1][1] == 1:
-            return Graph, 'Continue'
-
-
-
 #RB_Check[0][0] = R의 Right RB_Check[0][1] = R의 Down
 #RB_Check[0][2] = R의 Left RB_Check[0][3] = R의 Up
 #RB_Check[1][0] = B의 Right RB_Check[1][1] = B의 Down
@@ -255,23 +127,24 @@ def Marble_Escape():
             Check_Graph = Graph_que.popleft()
             RB_Check = Check_Continue(Check_Graph)
             if 1 in RB_Check[0] or 1 in RB_Check[1]:
+                #오른쪽 아래 왼쪽 위
                 if RB_Check[0][0] == 1 or RB_Check[1][0] ==1:
-                    Return_Graph, result[0] = Go_Right(Check_Graph)
+                    Return_Graph, result[0] = Go(Check_Graph, [0, 1])
                     if result[0] == 'Continue':
                         Graph_que.append(Return_Graph)
                         Count_Time +=1                   
                 if RB_Check[0][1] == 1 or RB_Check[1][1] ==1:
-                    Return_Graph, result[1] = Go_Down(Check_Graph)
+                    Return_Graph, result[1] = Go(Check_Graph, [1, 0])
                     if result[1] == 'Continue':
                         Graph_que.append(Return_Graph)
                         Count_Time +=1
                 if RB_Check[0][2] == 1 or RB_Check[1][2] ==1:
-                    Return_Graph, result[2] = Go_Left(Check_Graph)
+                    Return_Graph, result[2] = Go(Check_Graph, [0, -1])
                     if result[2] == 'Continue':
                         Graph_que.append(Return_Graph)
                         Count_Time +=1
                 if RB_Check[0][3] == 1 or RB_Check[1][3] ==1:
-                    Return_Graph, result[3] = Go_Up(Check_Graph)
+                    Return_Graph, result[3] = Go(Check_Graph, [-1, 0])
                     if result[3] == 'Continue':
                         Graph_que.append(Return_Graph)
                         Count_Time +=1
