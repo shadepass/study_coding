@@ -88,4 +88,48 @@ Make_Array()
 #print(f'{Cal_Zero()}')
 Find_Answer()
      
+-----
+#-*- coding:utf-8 -*-
+from collections import deque
+import sys, copy
+input = sys.stdin.readline
 
+def Make_Array():
+    global Array, Number
+    global Farray, Rarray
+    Farray, Rarray = [[], []]
+
+    for i in range(Number):
+        for j in range(Number):
+            Farray.append(Array[i][0] + Array[j][1])
+            Rarray.append(Array[i][2] + Array[j][3])
+    Farray.sort()
+    Rarray.sort()
+
+def Find_Answer():
+    global Farray, Rarray, Number
+    max_value = Number*Number
+    left = 0
+    right = max_value-1
+
+    result = 0
+    while left<=max_value-1 and right>=0:
+        if Farray[left]+Rarray[right] > 0:
+            right -= 1
+        elif Farray[left]+Rarray[right] < 0:
+            left += 1
+        elif Farray[left]+Rarray[right] == 0:
+            temp = right
+            while Farray[left]+Rarray[temp] == 0 and temp>=0:
+                result += 1
+                temp -= 1
+            left +=1
+
+    print(f'{result}')
+
+Number = int(input())
+
+Array =[list(map(int, input().rstrip().split())) for _ in range(Number)]
+
+Make_Array()
+Find_Answer()
