@@ -133,3 +133,54 @@ Array =[list(map(int, input().rstrip().split())) for _ in range(Number)]
 
 Make_Array()
 Find_Answer()
+
+--====
+
+#-*- coding:utf-8 -*-
+from collections import deque
+import sys, copy
+input = sys.stdin.readline
+
+def Make_Array():
+    global Array, Number
+    global Farray, Rarray
+    Farray, Rarray = [[], []]
+
+    for i in range(Number):
+        for j in range(Number):
+            Farray.append(Array[i][0] + Array[j][1])
+            Rarray.append(Array[i][2] + Array[j][3])
+    Farray.sort()
+    Rarray.sort()
+
+def Find_Answer():
+    global Farray, Rarray, Number
+    max_value = Number*Number
+    left = 0
+    right = max_value-1
+
+    result = 0
+    while left<=max_value-1 and right>=0:
+        if Farray[left]+Rarray[right] > 0:
+            right -= 1
+        elif Farray[left]+Rarray[right] < 0:
+            left += 1
+        elif Farray[left]+Rarray[right] == 0:
+            temp_left = left + 1
+            temp_right = right -1
+            while temp_left <= max_value-1 and Farray[temp_left] == Farray[left]:
+                temp_left += 1
+            while temp_right >= 0 and Rarray[temp_right] == Rarray[right]:
+                temp_right -= 1
+            result += (temp_left - left) * (right - temp_right)
+            left = temp_left
+            right = temp_right
+           
+    print(f'{result}')
+
+Number = int(input())
+
+Array =[list(map(int, input().rstrip().split())) for _ in range(Number)]
+
+Make_Array()
+Find_Answer()
