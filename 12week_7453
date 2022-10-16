@@ -215,20 +215,6 @@ def Find_Answer():
             F_right = bisect.bisect_right(Farray, Farray[i])
             result += (F_right - F_left) * (right - left)
             i = F_right
-
-    #while left<=max_value-1 and right>=0:
-    #    if Farray[left]+Rarray[right] > 0:
-    #        right -= 1
-    #    elif Farray[left]+Rarray[right] < 0:
-    #        left += 1
-    #    elif Farray[left]+Rarray[right] == 0:
-    #        F_left = bisect.bisect_left(Farray, Farray[left])
-    #        F_right = bisect.bisect_right(Farray, Farray[left])
-    #        R_left = bisect.bisect_left(Rarray, Rarray[right])
-    #        R_right = bisect.bisect_right(Rarray, Rarray[right])
-    #        result += (F_right - F_left) * (R_right - R_left)
-    #        left = F_right
-    #        right = R_left - 1
            
     print(f'{result}')
 
