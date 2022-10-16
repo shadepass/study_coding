@@ -135,10 +135,9 @@ Make_Array()
 Find_Answer()
 
 --====
-
 #-*- coding:utf-8 -*-
 from collections import deque
-import sys, copy
+import sys, bisect
 input = sys.stdin.readline
 
 def Make_Array():
@@ -158,7 +157,6 @@ def Find_Answer():
     max_value = Number*Number
     left = 0
     right = max_value-1
-
     result = 0
     while left<=max_value-1 and right>=0:
         if Farray[left]+Rarray[right] > 0:
@@ -166,16 +164,13 @@ def Find_Answer():
         elif Farray[left]+Rarray[right] < 0:
             left += 1
         elif Farray[left]+Rarray[right] == 0:
-            temp_left = left + 1
-            temp_right = right -1
-            while temp_left <= max_value-1 and Farray[temp_left] == Farray[left]:
-                temp_left += 1
-            while temp_right >= 0 and Rarray[temp_right] == Rarray[right]:
-                temp_right -= 1
-            result += (temp_left - left) * (right - temp_right)
-            left = temp_left
-            right = temp_right
-           
+            F_left = bisect.bisect_left(Farray, Farray[left])
+            F_right = bisect.bisect_right(Farray, Farray[left])
+            R_left = bisect.bisect_left(Rarray, Rarray[right])
+            R_right = bisect.bisect_right(Rarray, Rarray[right])
+            result += (F_right - F_left) * (R_right - R_left)
+            left = F_right
+            right = R_left - 1           
     print(f'{result}')
 
 Number = int(input())
