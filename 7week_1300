@@ -1,0 +1,4 @@
+#-*- coding:utf-8 -*-
+from collections import deque
+import sys, bisect
+input = sys.stdin.readline
