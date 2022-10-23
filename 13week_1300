@@ -2,3 +2,30 @@
 from collections import deque
 import sys, bisect
 input = sys.stdin.readline
+
+def Make_Array():
+    global Number
+#   Array = []
+    Array = [0] * 1000000000
+#    for i in range(Number):
+#        for j in range(Number):
+#           Array = Array + str((i+1)*(j+1))
+#    for i in range(Number):
+#        for j in range(Number):
+#           Array.append((i+1)*(j+1))
+
+    Array.sort()
+    #print(f'{Array}')
+    return Array
+
+
+def Find_answer(Array, Find_Number):
+    if Find_Number >= 1000000000:
+        Find_Number %= 1000000000
+    print(f'{Array[Find_Number-1]}')
+
+Number = int(input())
+Find_Number = int(input())
+
+Array = Make_Array()
+Find_answer(Array, Find_Number)
