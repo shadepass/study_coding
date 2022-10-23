@@ -29,3 +29,60 @@ Find_Number = int(input())
 
 Array = Make_Array()
 Find_answer(Array, Find_Number)
+--------------------
+---------------------
+#-*- coding:utf-8 -*-
+from collections import deque
+import sys, bisect
+input = sys.stdin.readline
+
+def Make_Array():
+    global Number
+#   Array = []
+    Array = [0] * 1000000000
+#    for i in range(Number):
+#        for j in range(Number):
+#           Array = Array + str((i+1)*(j+1))
+#    for i in range(Number):
+#        for j in range(Number):
+#           Array.append((i+1)*(j+1))
+
+    Array.sort()
+    #print(f'{Array}')
+    return Array
+
+def Find_lower():
+    global Number, Middle
+    result = 0
+    for i in range(Number):
+        result += min(int(Middle/(i+1)), Number)
+
+    return result
+
+
+def Find_answer():
+    global Find_Number, Max, Min, Middle
+    result=0
+    while(Min<=Max):
+        lower = Find_lower()
+        if lower >= Find_Number:
+            Max = Middle - 1
+        else:
+            Min = Middle +1
+        Middle = int((Max+Min)/2)
+
+    return Min
+
+#    if Find_Number >= 1000000000:
+#        Find_Number %= 1000000000
+#    print(f'{Array[Find_Number-1]}')
+
+Number = int(input())
+Min = 1
+Max = Number**2
+Middle = int(Min + Max / 2)
+
+Find_Number = int(input())
+
+#Array = Make_Array()
+print(f'{Find_answer()}')
