@@ -1,16 +1,18 @@
 #-*- coding:utf-8 -*-
 from collections import deque
-import sys, bisect, copy
+import sys
 input = sys.stdin.readline
-Dict_Sort={}
-Dict2_sort={}
+
+def fib(Number):
+    Recursive_array = [0] * (Number+1)
+    Recursive_array[1] = 1
+    Recursive_array[2] = 1
+
+    for i in range(3, Number+1):
+        Recursive_array[i] = Recursive_array[i-1] + Recursive_array[i-2]
+
+    return Recursive_array[Number]
 
 Number = int(input())
-List = list(map(int, input().rstrip().split()))
 
-for i in range(Number):
-    Dict2_sort[List[i]] = i
-Sort_List = list(Dict2_sort.keys())
-#Sort_List.sort()
-
-print(f'{len(Sort_List)}')
+print(f'{fib(Number)} {Number-2}')
