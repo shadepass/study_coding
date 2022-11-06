@@ -1,0 +1,16 @@
+#-*- coding:utf-8 -*-
+from collections import deque
+import sys, bisect, copy
+input = sys.stdin.readline
+Dict_Sort={}
+Dict2_sort={}
+
+Number = int(input())
+List = list(map(int, input().rstrip().split()))
+
+for i in range(Number):
+    Dict2_sort[List[i]] = i
+Sort_List = list(Dict2_sort.keys())
+#Sort_List.sort()
+
+print(f'{len(Sort_List)}')
