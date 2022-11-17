@@ -1,0 +1,19 @@
+#-*- coding:utf-8 -*-
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+def fib(Number):
+    Recursive_array = [0] * (Number+1)
+    Recursive_array[1] = 1
+    Recursive_array[2] = 1
+
+    for i in range(3, Number+1):
+        Recursive_array[i] = Recursive_array[i-1] + Recursive_array[i-2]
+
+    return Recursive_array[Number]
+
+Number = int(input())
+
+print(f'{fib(Number)} {Number-2}')
+
