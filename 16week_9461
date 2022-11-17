@@ -3,17 +3,21 @@ from collections import deque
 import sys
 input = sys.stdin.readline
 
-def fib(Number):
-    Recursive_array = [0] * (Number+1)
-    Recursive_array[1] = 1
-    Recursive_array[2] = 1
+def Padoban(Input_value, Value):
+    #global Value
 
-    for i in range(3, Number+1):
-        Recursive_array[i] = Recursive_array[i-1] + Recursive_array[i-2]
-
-    return Recursive_array[Number]
+    for i in range(8, max(Input_value)+1):
+        Value[i] = Value[i-2] + Value[i-3]
 
 Number = int(input())
 
-print(f'{fib(Number)} {Number-2}')
+Input_value = list(int(input()) for _ in range(Number))
 
+Value = [0] * 101
+Value[1:8] = [1, 1, 1, 2, 2, 3, 4]
+
+
+Padoban(Input_value, Value)
+
+for i in range(Number):
+    print(f'{Value[Input_value[i]]}')
