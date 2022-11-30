@@ -1,0 +1,24 @@
+#-*- coding:utf-8 -*-
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+Number = int(input())
+
+Step_value = list(int(input()) for _ in range(Number))
+
+Result_value = [0] * Number
+
+Result_value[0] = Step_value[0]
+
+if 1 < Number :
+    Result_value[1] = Step_value[0] + Step_value[1]
+
+if 2 < Number:
+    Result_value[2] = max(Step_value[1]+Step_value[2], Step_value[2]+Result_value[0])
+
+if Number > 3:
+    for i in range(3, Number):
+        Result_value[i] = max(Step_value[i]+Result_value[i-2], Step_value[i]+Step_value[i-1]+Result_value[i-3])
+
+print(f'{Result_value[Number-1]}')
