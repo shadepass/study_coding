@@ -1,0 +1,53 @@
+def solution(maps):
+    answer = []
+    stack = []
+    temp_A = 0
+    temp_B = 0
+    value = 0
+    
+    #입력받아서 2차원 배열 만들기
+    for i in range(len(maps)):
+        maps[i] = list(maps[i])
+    
+    Column = len(maps[0])
+    Row = len(maps)
+        
+    Visit = [[0 for _ in range(Column)] for _ in range(Row)]
+    
+    #0,0 부터 시작해서숫자 발견하면 상하좌우 뻗어나가서 값 리턴하는 함수 구현
+    #마지막에는 배열에 append
+    
+    for i in range(Row):
+        for j in range(Column):
+            if Visit[i][j] != 1:
+                if maps[i][j] == 'X':
+                    Visit[i][j] = 1
+                else:
+                    stack.append([i, j]) 
+                    Visit[i][j] = 1
+                    while(1):
+                        if not stack:
+                            break
+                        else:
+                            temp_A, temp_B = stack.pop()
+                        value = value + int(maps[temp_A][temp_B])                               
+                        if temp_A+1 < Row and Visit[temp_A+1][temp_B] != 1 and maps[temp_A+1][temp_B] != 'X':
+                            stack.append([temp_A+1, temp_B])
+                            Visit[temp_A+1][temp_B] = 1
+                        if temp_A-1 >= 0 and Visit[temp_A-1][temp_B] != 1 and maps[temp_A-1][temp_B] != 'X':
+                            stack.append([temp_A-1, temp_B])
+                            Visit[temp_A-1][temp_B] = 1
+                        if temp_B+1 < Column and Visit[temp_A][temp_B+1] != 1 and maps[temp_A][temp_B+1] != 'X':
+                            stack.append([temp_A, temp_B+1])
+                            Visit[temp_A][temp_B+1] = 1
+                        if temp_B-1 >= 0 and Visit[temp_A][temp_B-1] != 1 and maps[temp_A][temp_B-1] != 'X':
+                            stack.append([temp_A, temp_B-1])
+                            Visit[temp_A][temp_B-1] = 1
+                        temp_A = -1
+                    answer.append(value)
+                    value = 0
+    answer.sort()
+    if not answer:
+        return [-1]
+    else:
+        return answer
