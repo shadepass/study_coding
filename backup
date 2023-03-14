@@ -1,0 +1,76 @@
+Back-up
+
+from collections import deque
+import copy
+
+n = 6
+wires = [[1, 4], [6, 3], [2, 5], [5, 1], [5, 3]]
+Check_append = [0] * (n+1)
+count = 0
+stack = []
+temp_thistime = []
+temp = []
+temp2 = []
+result = []
+result2 = []
+test = []
+score = [[] for _ in range(n+1)]
+check = 0
+
+for i in range(len(wires)):
+    score[wires[i][0]].append(wires[i][1])
+    score[wires[i][1]].append(wires[i][0])
+
+
+stack.append([1, 1])
+Check_append[1] = 1
+
+while stack:
+    count = 0
+    temp_thistime = stack.pop()
+    Check_append[temp_thistime[0]] = 1
+    temp.append(temp_thistime)
+    for i in range(0, len(score[temp_thistime[0]])):
+        if Check_append[score[temp_thistime[0]][i]] == 0:
+            stack.append([score[temp_thistime[0]][i], temp_thistime[1]+len(score[score[temp_thistime[0]][i]])-1])
+            count += 1
+        else:
+            pass
+
+    if count == 0:
+        temp2 = copy.deepcopy(temp)
+        result.insert(len(result), temp2)
+        temp.pop()
+       
+        while 1:
+            check = 0
+            if not temp:
+                break
+
+            for i in range(0, len(score[temp[len(temp)-1][0]])):
+                if Check_append[score[temp[len(temp)-1][0]][i]] == 0:
+                    check += 1
+                    break
+
+            if check == 0:
+                temp.pop()
+            else:
+                break
+    else:
+        pass
+
+#전체 가질 수 있는 값 중에서 젤 긴거 구하기
+result.sort(key=len)
+for i in range(0, len(result[len(result)-1])):
+    result2.append(result[len(result)-1][i][0])
+
+
+#계산한 젤 긴 라인에서 최솟값 찾기
+for i in range(0, len(result[len(result)-1])):
+    test.append(abs(abs(n-result[len(result)-1][i][1]) - result[len(result)-1][i][1]))
+test.sort()
+answer = test[0]
+
+print(f'{answer}')
+
+
