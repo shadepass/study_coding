@@ -1,0 +1,26 @@
+from itertools import combinations
+
+def solution(clothes):
+    answer = 0
+    list_cloth = {}
+    result = []
+    for i in range(len(clothes)):
+        if clothes[i][1] in list_cloth:
+            list_cloth[clothes[i][1]] += 1
+        else:
+            list_cloth[clothes[i][1]] = 1
+
+    list_value = list(list_cloth.values())
+    len_list = len(list_value)
+
+    for i in range(1, len_list+1):
+        result = result + list(combinations(list_value, i))
+    count = 0
+
+    for i in range(0, len(result)):
+        temp = 1
+        for j in range(0, len(result[i])):
+            temp *= result[i][j]
+        answer += temp
+    
+    return answer
