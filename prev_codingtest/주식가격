@@ -1,0 +1,35 @@
+def list_plus(input_list, value):
+    for i in range(0, len(input_list)-1):
+        input_list[i] += value
+        
+    return input_list
+
+def check_zero(answer, input_list, count):
+    if 0 in input_list:
+        for i in range(0, len(input_list)):
+            if input_list[i] == 0:
+                answer[i] = count
+                input_list[i] = -99999
+
+    return answer, input_list
+
+
+
+prices = [1, 2, 3, 2, 3]
+answer = [0 for _ in range(len(prices))]
+result = []
+#answer = []
+#prices = list_plus(prices, 3)
+
+for i in range(0, len(prices)-1):
+    count = prices[i+1] - prices[i]
+    
+    result.append(count)
+
+    result = list_plus(result, count)
+
+    answer, result = check_zero(answer, result, i)
+
+print(answer)
+
+
