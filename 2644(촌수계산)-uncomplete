@@ -1,0 +1,109 @@
+#-*- coding:utf-8 -*-
+from collections import deque
+import sys
+
+def Make_Family():
+    global Relation, Family_group, People_Num
+    # 한 부모의 형제들을 표시하기 위한 리스트
+    Brother = []
+    
+    # 부모 자식을 값 1로 연결
+    for i in range(len(Relation)):
+        Family_group[Relation[i][0]][Relation[i][1]] = 1
+        #Family_group[Relation[i][1]][Relation[i][0]] = 1
+    
+    # 상단에서 표시하였던 한 부모의 자식들을 리스트로 받은 뒤
+    # 각 리스트에 들어있는 번호들 끼리 2의 값으로 연결
+    for i in range(People_Num + 1):
+        for j in range(People_Num + 1):
+            if Family_group[i][j] == 1:
+                Brother.append(j)
+        while Brother:
+            for k in range(len(Brother)-1):
+                Family_group[Brother[len(Brother)-1]][Brother[k]] = 2
+                Family_group[Brother[k]][Brother[len(Brother)-1]] = 2
+            Brother.pop()
+
+    for i in range(len(Relation)):
+        Family_group[Relation[i][0]][Relation[i][1]] = 0
+        Family_group[Relation[i][1]][Relation[i][0]] = 1
+
+
+ 
+
+def Calculate_Relation():
+    global Family_group, People1, People2, People_Num
+    Result1 = 0
+    Result2 = 0
+    find = False
+    Brother_que = deque()
+    Parent_que = deque()
+    Parent_que.append(People1)
+
+    while Parent_que:
+        Check_People = Parent_que.popleft()
+        for i in range(People_Num+1):
+            if Family_group[Check_People][i] == 2:
+                Brother_que.append(i)
+            elif Family_group[Check_People][i] == 1:
+                Parent_que.append(i)
+
+        if People2 in Brother_que:
+            Result1 += 2
+            find = True
+            break;
+        elif People2 in Parent_que:
+            Result1 += 1
+            find = True
+            break;
+        else:
+            Brother_que = deque()
+            Result1 += 1
+
+    if find == False:
+        Result1 = -1
+
+    Brother_que = deque()
+    Parent_que = deque()
+    Parent_que.append(People2)
+    find = False
+
+    while Parent_que:
+        Check_People = Parent_que.popleft()
+        for i in range(People_Num+1):
+            if Family_group[Check_People][i] == 2:
+                Brother_que.append(i)
+            elif Family_group[Check_People][i] == 1:
+                Parent_que.append(i)
+
+        if People1 in Brother_que:
+            Result2 += 2
+            find = True
+            break;
+        elif People1 in Parent_que:
+            Result2 += 1
+            find = True
+            break;
+        else:
+            Brother_que = deque()
+            Result2 += 1
+
+    if find == False:
+        Result2 = -1
+
+    return max(Result1, Result2)
+
+
+
+# 전체 가족 수, 비교할 가족, 부모관계, 부모관계 입력 수행
+People_Num = int(sys.stdin.readline())
+People1, People2 = map(int, sys.stdin.readline().split())
+Relation_Num = int(sys.stdin.readline())
+Relation = [list(map(int, sys.stdin.readline().split())) for _ in range(Relation_Num)]
+
+# 'Faimly_group' = 전체 가족들을 부모자식은 1, 형제는 2로 연결
+Family_group = [[0 for _ in range(People_Num+1)] for _ in range(People_Num+1)]
+
+Make_Family()
+
+print(f'{Calculate_Relation()}')

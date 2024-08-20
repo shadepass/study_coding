@@ -1,0 +1,68 @@
+#-*- coding:utf-8 -*-
+from collections import deque
+
+# 처음부터 탐색하면서 1만나면 그와 인접한 모든 집을 연결시키는 방식
+# 해당 집과 인접해 있으면 모두 'Map_Check'에서 확인되기 때문에 중복될일은 없고
+# 다음에 탐색할 때도 패스된다.
+def Make_Group():
+    global Map_Size, Map, Map_Check, Group
+    for i in range(Map_Size):
+        for j in range(Map_Size):
+            if Map[i][j] == 1 and Map_Check[i][j] == 0:
+                Group.append(Count_Group(i, j))
+
+# 체크안된 1과 연관된 모든 1을 구하는 함수
+def Count_Group(Row, Col):
+    global Map_Size, Map, Map_Check, Group
+
+    que = deque()
+    que.append([Row, Col])
+    Map_Check[Row][Col] = 1
+    count = 1
+
+    # bfs 방식으로 탐색하기 위해서 que 이용
+    # 앞 뒤 위 아래에 1이 위치하는지 확인하고
+    # 위치한다면 que에 삽입하고
+    # 결과적으로 주위에 인접한 집이 없을 때 까지 수행
+    while que:
+        [Current_Row, Current_Col] = que.popleft()
+        if Current_Row + 1 < Map_Size and Map[Current_Row+1][Current_Col] and Map_Check[Current_Row+1][Current_Col] == 0:
+            que.append([Current_Row+1, Current_Col])
+            Map_Check[Current_Row+1][Current_Col] = 1
+            count += 1
+        
+        if Current_Row - 1 >= 0 and Map[Current_Row-1][Current_Col] and Map_Check[Current_Row-1][Current_Col] == 0:
+            que.append([Current_Row-1, Current_Col])
+            Map_Check[Current_Row-1][Current_Col] = 1
+            count += 1
+
+        if Current_Col + 1 < Map_Size and Map[Current_Row][Current_Col+1] and Map_Check[Current_Row][Current_Col+1] == 0:
+            que.append([Current_Row, Current_Col+1])
+            Map_Check[Current_Row][Current_Col+1] = 1
+            count += 1
+
+        if Current_Col-1 >= 0 and Map[Current_Row][Current_Col-1] and Map_Check[Current_Row][Current_Col-1] == 0:
+            que.append([Current_Row, Current_Col-1])
+            Map_Check[Current_Row][Current_Col-1] = 1
+            count += 1
+
+    return count
+
+# 맵 크기와 맵 입력
+Map_Size = int(input())
+Map = [list(map(int, input())) for _ in range(Map_Size)]
+
+# 최종적으로 그룹별 집 개수를 저장하고 있는 리스트
+Group = []
+
+# 집 중복 체크 방지
+Map_Check = [[0 for _ in range(Map_Size)] for _ in range(Map_Size)]
+
+Make_Group()
+
+# 각 그룹별 개수를 오름차순으로 정렬 후
+# 하나씩 출력
+Group.sort()
+print(f'{len(Group)}')
+for i in range(len(Group)):
+    print(f'{Group[i]}')

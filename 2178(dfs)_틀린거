@@ -1,0 +1,75 @@
+#-*- coding:utf-8 -*-
+
+def Find_Way_R():
+    global Row, Col, Maze
+    Check_Row = 0
+    Check_Col = 0
+    Stack = []
+    Stack.append([Check_Row, Check_Col])
+    Check_Maze =[[0 for _ in range(Col)] for _ in range(Row)]
+    Check_going = 0
+
+    while Check_Row != Row-1 or Check_Col != Col-1:
+        if Check_Col + 1 < Col and Maze[Check_Row][Check_Col+1] == 1 and Check_Maze[Check_Row][Check_Col+1] == 0:
+            Check_Col += 1
+            Check_going = 1
+        elif Check_Row + 1 < Row and Maze[Check_Row+1][Check_Col] == 1 and Check_Maze[Check_Row+1][Check_Col] == 0:
+            Check_Row += 1
+            Check_going = 1
+        elif Check_Col - 1 >= 0 and Maze[Check_Row][Check_Col-1] == 1 and Check_Maze[Check_Row][Check_Col-1] == 0:
+            Check_Col -= 1
+            Check_going = 1
+        elif Check_Row - 1 >= 0 and Maze[Check_Row-1][Check_Col] == 1 and Check_Maze[Check_Row-1][Check_Col] == 0:
+            Check_Row -= 1
+            Check_going = 1
+        
+        if Check_going == 1:
+            Check_going = 0
+            Stack.append([Check_Row, Check_Col])
+            Check_Maze[Check_Row][Check_Col] = 1
+        else:
+            Stack.pop()
+            [Check_Row, Check_Col] = Stack[-1]
+
+    return len(Stack)
+
+def Find_Way_D():
+    global Row, Col, Maze
+    Check_Row = 0
+    Check_Col = 0
+    Stack = []
+    Stack.append([Check_Row, Check_Col])
+    Check_Maze =[[0 for _ in range(Col)] for _ in range(Row)]
+    Check_going = 0
+
+    while Check_Row != Row-1 or Check_Col != Col-1:
+
+        if Check_Row + 1 < Row and Maze[Check_Row+1][Check_Col] == 1 and Check_Maze[Check_Row+1][Check_Col] == 0:
+            Check_Row += 1
+            Check_going = 1
+        elif Check_Col + 1 < Col and Maze[Check_Row][Check_Col+1] == 1 and Check_Maze[Check_Row][Check_Col+1] == 0:
+            Check_Col += 1
+            Check_going = 1
+        elif Check_Row - 1 >= 0 and Maze[Check_Row-1][Check_Col] == 1 and Check_Maze[Check_Row-1][Check_Col] == 0:
+            Check_Row -= 1
+            Check_going = 1
+        elif Check_Col - 1 >= 0 and Maze[Check_Row][Check_Col-1] == 1 and Check_Maze[Check_Row][Check_Col-1] == 0:
+            Check_Col -= 1
+            Check_going = 1
+
+        if Check_going == 1:
+            Check_going = 0
+            Stack.append([Check_Row, Check_Col])
+            Check_Maze[Check_Row][Check_Col] = 1
+        else:
+            Stack.pop()
+            [Check_Row, Check_Col] = Stack[-1]
+
+    return len(Stack)
+
+
+
+Row, Col = map(int, input().split())
+Maze = [list(map(int, input())) for _ in range(Row)]
+
+print(f'{min(Find_Way_R(), Find_Way_D())}')
