@@ -180,7 +180,9 @@ void print_sum(int a, int b){
 ## 유튜브 동영상 넣기
 1. Iframe 이용하기
 ![유튜브 소스코드 복사 이미지](image-1.png)
+
 <iframe width="1280" height="720" src="https://www.youtube.com/embed/cbuZfY2S2UQ" title="[ 𝑷𝒍𝒂𝒚𝒍𝒊𝒔𝒕 ]  코딩할때 듣기 좋은 노래 • lofi type beat • 3 hours" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="896" height="504" src="https://www.youtube.com/embed/1xWmteIE3Y8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## 이미지 넣기
 ```
