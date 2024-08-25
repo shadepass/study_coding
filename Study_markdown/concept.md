@@ -5,15 +5,15 @@
  - 표준이 없기 떄문에 표현하는 도구/플랫폼에서 서로 다르게 시현될 수 있다.
 ---
 ---
-<br>
+> github에서는 font size, font 색, font 배경색이 불가함(HTML 문법들은 안 먹히는 듯) 
 
 마크다운 문법 목차
 
-<span style = "font-size: 150%">[1. 구분선](#구분선)</span><br>
-<span style = "font-size: 150%">[2. 줄바꿈](#줄바꿈)</span><br>
-<span style = "font-size: 150%">[3. 제목](#제목타이틀---크기지정)</span><br>
-<span style = "font-size: 150%">[4. 인용](#인용-구문)</span><br>
-<span style = "font-size: 150%">[5. 폰트](#폰트)</span><br>
+<span style = "font-size: 200%">[1. 구분선](#구분선)</span><br>
+<span style = "font-size: 200%">[2. 줄바꿈](#줄바꿈)</span><br>
+<span style = "font-size: 200%">[3. 제목](#제목타이틀---크기지정)</span><br>
+<span style = "font-size: 200%">[4. 인용](#인용-구문)</span><br>
+<span style = "font-size: 200%">[5. 폰트](#폰트)</span><br>
 
 
 # 구분선
@@ -51,21 +51,19 @@ HTML의 <blockquote> 문법이며
 ```
 >
 >>
->>>
->>
+>
 Github의 경우 위와 같이 작성된 경우,
-3번째 깊이까지 내려갔으므로 같은 문단에서는 다시 깊이가 낮아지지 않는다.
-(4번째 줄 인용문구가 생략되고 3번째줄에 같이들어간다.)
+2번째 깊이까지 내려갔으므로 같은 문단에서는 다시 깊이가 낮아지지 않는다.
+(3번째 줄 인용문구가 생략되고 2번째줄에 인용 깊이와 같아진다.)
 ```
 
 # 폰트
 ## 폰트 굵게(bold)
 ```
-HTML 및 CSS로 적용할 땐
-<b> b 태그 </b>
-<strong> strong 태그 </strong>
-front-weight 속성(css)
-과 같다.
+HTML 및 CSS 문법
+  - <b> b 태그 </b>
+  - <strong> strong 태그 </strong>
+  - front-weight 속성(css)
 ```
 
 ```
@@ -103,7 +101,6 @@ HTML의 <i> 문법이며
 ```
 <span style ="color:red"> 입력문자 </span>
 <span style ="color:blue"> 입력문자 </span>
-...
 ```
 <span style = "color:yellow"> 노란색 글씨 </span>
 
@@ -125,7 +122,7 @@ HTML의 <i> 문법이며
 ```
 <span style ="font-size:200%"> 글자크기 기본 사이즈의 200% </span>
 
-# HTML 태그를 이용한 폰트 수정 한번에 하기
+## HTML 태그를 이용한 폰트 수정 한번에 하기
 ```
 <b?<span style = "color:white; background-color:red; font-size:150%"> 글자는 흰색, 배경은 빨강, 사이즈는 150% </span></b>
 ```
@@ -141,10 +138,39 @@ HTML의 <i> 문법이며
 > 띄어쓰기는 "-"로 연결해야한다.  
 > 또한, 제목1~제목5 동일하게 "#" 문구로 접근가능하다.
 
-dlflskdk
-{1231:.notice}
-notice
-{: .notice}
+# 문자 박스(notice)
+입력하는 문자를 강조하기 위해 박스에 넣는 문법
+|Notice type|Class|
+|:-:|:-|
+|Dafult|.notice|
+|Primary|.notice--primary|
+|info|.notice--info|
+|warning|.notice--warning|
+|success|.notice-success|
+|Danger|.notice-danger|
+
+★ **notice가 안되는뎅
+{: .notice--primary}
+
+# 표(table)
+파이프(|)를 이용해서 컬럼 만들기
+기본 형태: 제목 한줄 + "-"를 이용한 표(table) 입력임을 표시
+"-"개수는 의미 없다.
+```
+|제목1|제목2|제목3
+|-|-|-|
+|내용|내용|내용|
+|내용|내용|내용|
+```
+> ---   정렬하지 않음  
+> :---  왼쪽으로 정렬  
+> ---:  오른쪽 정렬  
+> :---: 가운대 정렬
+
+|이름|나이|횟수|
+|-|:-|-:|
+|강아지|50|5
+|고양이|30|4
 
 
 # 링크 삽입
