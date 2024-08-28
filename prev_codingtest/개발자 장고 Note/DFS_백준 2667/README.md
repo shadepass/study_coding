@@ -1,4 +1,4 @@
-# 3. 코딩테스트 - BFS
+# DFS
 - 그래프 탐색: 어떤 것들이 연속해서 이어질 때 모두 확인
   - BFS: Breadth-first search(너비 우선 탐색)
   - DFS: Depth-frist search(깊이 우선 탐색)
@@ -9,23 +9,30 @@
   - DFS: 1->2->3->4->6->5
 
 ## 아이디어
-- 시작점에 연결된 Vertex 찾기
-- 찾은 vertex를 queue에 저장
-- Queue 뽑으면서 확인
-> 2중 For문은 방문 여부를 확인해야할 것이다.
+- 자식 -> 자식 -> 자식
+- Stack, 재귀 이용
+- DFS, 백트래킹에 주로 사용
+> 일반적으로 그래프 탐색은 BFS로도 충분하지만
+> 재귀를 활용하는데는 DFS가 가장 적합함  
+- 연결된 Vertextㄹ을 끝날 때 까지 계속해서 찾아가면서 DFS 구현
 
+## 재귀함수
+- **자기 자신을 다시** 호출하는 함수
+- 종료되는 시점 명시 필요
+- 재귀함수가 너무 깊으면 Stack Overflow 발생
+  
 ## 시간복잡도
 - BFS: O(V + E)
 
 ## 자료구조
 - 검색할 그래프 있어야함
 - 방문여부 확인 필요
-- BFS -> Queue 사용
 
-## 예시문제: 백준1926
-- 문제: [백준링크](https://www.acmicpc.net/problem/1926)
+## 예시문제: 백준2667
+- 문제: [단지번호붙이기](https://www.acmicpc.net/problem/1926)
 
 ### 문제 설명
+![image](https://github.com/user-attachments/assets/5caac9e6-204d-47da-98b1-f30089f7363f)
 - 1로 연결된 것들을 그림으로 가정
 - 가로, 세로로 연결된 것만 "한"그림이며 대각선은 무시
 
