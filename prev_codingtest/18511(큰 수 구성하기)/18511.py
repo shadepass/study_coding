@@ -11,6 +11,7 @@ str_N = str(N)
 N_legnth = len(str_N)
 
 answer = []
+lower_case = False
 
 for i in range(N_legnth):
     out_flag = False
@@ -26,11 +27,31 @@ for i in range(N_legnth):
             out_flag = True
             answer.append(str(K))
             break
-    if keep_flag == False and out_flag == False or out_flag == True:
+
+    if keep_flag == False and out_flag == False:
+        lower_case = True
+        break
+    if out_flag == True:
         break
 
-for j in range(i+1, N_legnth):
-    answer.append(str(K_list[0]))
+if lower_case == True:
+    answer = []
+    for K in K_list:
+        if K < int(str_N[0]):
+            out_flag = True
+            break
+    
+    if out_flag == True:
+        answer.append(str(K))
+        for j in range(1, N_legnth):
+            answer.append(str(K_list[0])) 
+    
+    else:
+        for j in range(1, N_legnth):
+            answer.append(str(K_list[0]))  
+else:
+    for j in range(i+1, N_legnth):
+        answer.append(str(K_list[0]))
 
 answer = int(''.join(answer))
 print(answer)
