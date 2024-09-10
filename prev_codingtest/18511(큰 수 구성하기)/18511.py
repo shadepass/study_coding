@@ -13,18 +13,20 @@ N_legnth = len(str_N)
 answer = []
 
 for i in range(N_legnth):
-    out_flag = 0
+    out_flag = False
+    keep_flag = False
     for K in K_list:
         if K > int(str_N[i]):
             pass
         elif K == int(str_N[i]):
+            keep_flag = True
             answer.append(str(K))
             break
         else:
+            out_flag = True
             answer.append(str(K))
-            out_flag = 1
             break
-    if out_flag == True:
+    if keep_flag == False and out_flag == False or out_flag == True:
         break
 
 for j in range(i+1, N_legnth):
