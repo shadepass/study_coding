@@ -1,6 +1,6 @@
 import sys
 import math
-import numpy as np
+#import numpy as np
 input = sys.stdin.readline
 
 #print(math.log(100, 17))
