@@ -8,53 +8,48 @@ K_list = list(map(int, input().split()))
 K_list.sort(reverse = True)
 
 str_N = str(N)
-N_legnth = len(str_N)
-
+N_length = len(str_N)
 answer = []
-lower_case = False
+out_flag = False
+count = 0
+current_j = -1
 
-for i in range(N_legnth):
-    out_flag = False
+while len(answer) != N_length:
     keep_flag = False
-    for K in K_list:
-        if K > int(str_N[i]):
+    
+    for j in range(current_j+1, len(K_list)):
+        if K_list[j] > int(str_N[count]):
             pass
-        elif K == int(str_N[i]):
+        elif K_list[j] == int(str_N[count]):
             keep_flag = True
-            answer.append(str(K))
+            answer.append(j)
             break
         else:
             out_flag = True
-            answer.append(str(K))
+            answer.append(j)
             break
 
-    if keep_flag == False and out_flag == False:
-        lower_case = True
-        break
     if out_flag == True:
         break
 
-if lower_case == True:
-    answer = []
-    for K in K_list:
-        if K < int(str_N[0]):
-            out_flag = True
+    if keep_flag == False:
+        count -= 1
+        if not answer:
             break
-    
-    if out_flag == True:
-        answer.append(str(K))
-        for j in range(1, N_legnth):
-            answer.append(str(K_list[0])) 
-    
+        current_j = answer.pop()
     else:
-        for j in range(1, N_legnth):
-            answer.append(str(K_list[0]))  
-else:
-    for j in range(i+1, N_legnth):
-        answer.append(str(K_list[0]))
+        count += 1
 
-answer = int(''.join(answer))
-print(answer)
+if out_flag == True:
+    for j in range(count+1, N_length):
+        answer.append(0)
+elif not answer:
+    for j in range(N_length-1):
+        answer.append(0)
 
+temp_answer = []
+for i in range(len(answer)):
+    temp_answer.append(str(K_list[answer[i]]))
 
-#print(f'{K_list}')
+temp_answer = int(''.join(temp_answer))
+print(temp_answer)
