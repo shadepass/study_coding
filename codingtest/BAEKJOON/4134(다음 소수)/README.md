@@ -15,3 +15,28 @@
 
 ## 복잡도, 자료구조
 - 복잡도: O(n) = nlogn
+
+## 다른사람 풀이
+```
+def is_prime(num):
+    if num <= 1:
+        return False
+    for i in range(2, int(num**0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+def solve(n):
+    while True:
+        if is_prime(n):
+            return n
+        n += 1
+
+t = int(input())
+for _ in range(t):
+    n = int(input())
+    print(solve(n))
+```
+- 굳이 에르토스테네츠의 체를 사용해서 미리 수를 구할 필요없이
+- 그냥 주어진 수를 **2부터 제곱근까지 계산해서 소수인지 계산하는걸로** 작성해도
+- 시간 복잡도가 터지지 않는다. ㅠㅠ
