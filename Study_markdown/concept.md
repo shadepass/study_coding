@@ -87,7 +87,7 @@ Bold 관련 HTML 및 CSS 문법
 ```
 <span style = "color:yellow"> 노란색 글씨 </span>
 
-![PNG 색상표](image.png)
+![image](https://github.com/user-attachments/assets/399d293c-f95c-463f-86a4-2bf6cf242709)
 
 ## 형광펜
 ```
@@ -179,7 +179,7 @@ void print_sum(int a, int b){
 # 링크 삽입
 ## 유튜브 동영상 넣기
 1. Iframe 이용하기
-![유튜브 소스코드 복사 이미지](image-1.png)
+![유튜브 소스코드 복사 이미지](https://github.com/user-attachments/assets/3b46418b-38de-4559-abff-a0afccf77f12)
 
 <iframe width="1280" height="720" src="https://www.youtube.com/embed/cbuZfY2S2UQ" title="[ 𝑷𝒍𝒂𝒚𝒍𝒊𝒔𝒕 ]  코딩할때 듣기 좋은 노래 • lofi type beat • 3 hours" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -192,7 +192,7 @@ void print_sum(int a, int b){
 <img src = "그림 주소" width ="가로 길이" height = "세로 길이" alt = "그림 설명" />
 <img src = "" width = "" height ="" alt ="" />
 ```
-<img src = "image-2.png" width ="200" height = "200" alt ="예시 그림"/>
+<img src = "https://github.com/user-attachments/assets/6a954bb0-ff67-4db5-962b-e5add9db1ac1" width ="200" height = "200" alt ="예시 그림"/>
 
 ## 이미지를 md 파일에 복사하기
 github.com의 issue나 gist.github.com을 이용하는 방법  
