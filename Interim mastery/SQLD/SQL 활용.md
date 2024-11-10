@@ -129,9 +129,9 @@ PRIOR 부모 = 자식  형태인 경우 반대로 자식 데이터에서 부모 
 ## WINDOW 함수
 1. PARTITION BYU 절과 GROUP BY 절은 의미적으로 유사하다.
 2. PARTITION BY 절이 없으면 전체 집합을 하나의 Partition으로 정의한 것과 동일하다.
-3. 윈도우 함수 처리로 결과 건수는 그대로이다.
+3. 윈도우 함수 처리로 결과 건수는 그대로이다.(각 Row 별로 출력값有)
 4. 윈도우 함수 적용 범위는 Partition을 넘을 수 없다.
-5. GROUP BY 절과 함께 WINDOW FUNCTION을 사용한다고 하더라도 오류가 발생하지 않는다.
+5. GROUP BY 절과 함께 WINDOW FUNCTION을 같이 사용한다고 하더라도 오류가 발생하지 않는다.
 6. GROUPIGNG 된 그룹에 WINDOW Function을 적용한다.
-7. LAG 함수를 이용하여 파티션별 윈도우에서 몇 번째의 행의 값을 가져올 수있다.
+7. LAG 함수를 이용하여 파티션별 윈도우에서 이전 몇 번째의 행의 값을 가져올 수있다.
 9. LEAD을 이용하여 이후 몇 번째의 행의 값을 가져올 수 있으며 이는 SQL Server에서는 지원하지 않는다.

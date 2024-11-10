@@ -1,0 +1,52 @@
+## Response Time Analysis 방법론
+- Response Time을 정의하고 CPU Time과 Wait Time을 각각 break down하면서 서버의 일 양과 대기 시간을 분석해 나간다.
+- CPU Time은 파싱 작업에 소비한 시간인지 쿼리 본연의 오퍼레이션 수행을 위해 소비한 시간인지 분석
+- 세션 또는 시스템 전체에 발생하는 병목 현상과 그 원인을 찾아 문제를 해결하는 방법과 그 과정을 다룸
+- Response Time = Service Time(= CPU Time) + Wait Time(= Queue Time)
+
+## 가장 최근에 수행한 SQL에 대한 실제 실행계획을 확인할 수 있는 오라클 성능관리 도구인 DBMS_XPLAN 패키지 함수
+- DBMS_XPLAN.DISPLAY_CURSOR
+
+## SQL Server에서 명령어
+### SQL의 예상 실행계획을 출력하는 명령문
+- set showplan_text on
+### SQL 트레이스를 설정하기 위해 on으로 설정해야 하는 옵션
+- statistics profile
+- statistics io
+- statistics time
+- (showplan_text, showplan_all 옵션은 off 로 설정해야함)
+
+## Oracle에서 사용되는 명령어
+- explan plan for
+- set autotrace on
+- grant plustrace to
+- set autotrace on explain
+- set autotrace on statistics
+- set autotrace traceonly
+- alter session set sql_Trace = true; 와 같은 명령어는 관리자 및 개발자 모두 이용가능하다.
+### 오라클에서 sql_trace = true; 로 설정한 경우
+- 현재 접속한 세션의 SQL 트레이스가 수집된다.
+- SQL 수행 후 지정된 서버 디렉터리 밑에 트레이스 파일이 생성된다.
+- 생선된 트레이스 파일의 확장자는 ".trc"이다.
+
+## 오라클에서 SQL의 실행계획을 좀 더 편하고 이해하기 쉽게 출력하기 위해 제공하는 것
+- utlxpls.sql 스클비트
+- utlxplp.sql 스크립트
+- DBMS_XPLAN 패키지
+- (DBMS_SCHEDULER 패키지는 scheduling function 및 procedure들을 모아 놓은 패키지)
+
+## 오라클에서 생성된 SQL 트레이스 파일을 TKPROF 유틸리티를 사용하여 포맷팅했을 때, 이 포맷팅 결과에 포함된 정보
+- SQL 수행에 걸린 시간
+- 디스크로부터 읽은 블록 수
+- Parse, Execute, Fetch 각 단계의 수행 횟수
+- (commit 과 rollback 횟수는 저장되지 않음)
+
+## 오라클에서 어떤 SQL이 수행중일 때, 해당 SQL이 참조 중인 객체에 다른 사용자가 DDL 문장을 수행할 때 발생할 수 있는 대기 이벤트
+- library cache lock
+- library cahce pin
+
+## 오라클의 응답 시간 분석에 사용되는 도구인 AWR이 제공하는 첫 장 요약보고서 포함 정보
+- 누적 대기 시간이 가장 컸던 대기 이벤트들
+- 인스턴스 효율성
+- 공유 풀 메모리 사용량
+- 초당 부하 발생량
