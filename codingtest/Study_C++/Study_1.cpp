@@ -4,7 +4,12 @@ using namespace std;
 int main()
 {
    cout << "Hello, world!";
+
+   cin.get();
+
+
    return 0;
 }
 
 
+ 
