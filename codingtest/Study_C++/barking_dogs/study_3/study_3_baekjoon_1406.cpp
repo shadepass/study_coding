@@ -17,12 +17,13 @@ using namespace std;
 int main(){
     string cursor_list;
     string order;
-    vector<string> order_vector;
-    int number;
+    vector<char> order_vector;
+    string number_string;
     list<char> L;
-    cin >> cursor_list;
+    getline(cin, cursor_list);
     
-    cin >> number;
+    getline(cin, number_string);
+    int number_int = stoi(number_string);
 
     //L = cursor_list;
     
@@ -37,32 +38,71 @@ int main(){
     */
     list<char>::iterator iter = L.end();
 
-    for (int i = 0; i < number; i++){
+    for (int i = 0; i < number_int; i++){
         getline(cin, order);
-        string word;
+        char word;
+        vector<char> order_vector;
         istringstream order_stream(order);
 
-        while(order_stream >> order){
+        while(order_stream >> word){
             order_vector.push_back(word);
         }
+        //list가 가리킨다 → 커서가 앞에있다.
+        //end()랑 같다 가장 마지막에 위치한다. 
 
-        
-        cout << *iter << "\n";
-
-        string main_order = order_vector[0];
-
-        if(main_order == "D"){
-
+        char main_order = order_vector[0];
+        if(main_order == 'D'){
+            if(iter == L.end()){
+                continue;
+            }
+            else{
+                iter++;
+            }
         }
-        else if(main_order == "B"){
+        else if(main_order == 'L'){
+            if(iter == L.begin()){
+                continue;
+            }
+            else {
+                iter--;
+            }
+        }
+        else if(main_order == 'B'){
+            if(iter == L.begin()){
+                continue;
+            }
+            else if (iter == L.end()){
+                L.pop_back();
+                iter = L.end();
+            }
+            else{
+                iter--;
+                iter = L.erase(iter);
+            }
 
         }
         else{
-
+            if(iter == L.begin()){
+                L.push_front(order_vector[1]);
+                iter == L.begin();
+            }
+            else if(iter == L.end()){
+                L.push_back(order_vector[1]);
+                iter == L.end();
+            }
+            else{
+                L.insert(iter, order_vector[1]);
+            }
         }
 
     }
+    
+    for (auto i = L.begin(); i != L.end(); i++){
+        cout << *i;
+    }
 
+    
+    cin.get();
     return 0;
 }
 
