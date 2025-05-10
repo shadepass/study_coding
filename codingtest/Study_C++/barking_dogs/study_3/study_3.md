@@ -74,6 +74,6 @@ int main(void){
     for(auto i : L) cout << i << ' ' ;
     cout << 'n';
     for(list<int>iterator it = L.begin(); it != L.end(); it++)
-        cout << *it << '';
+        cout << *it << ' ';
 }
 ```

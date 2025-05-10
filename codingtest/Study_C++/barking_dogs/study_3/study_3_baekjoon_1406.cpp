@@ -14,6 +14,55 @@ using namespace std;
 
 // 커서를 C++ 리스트의 iterator를 가지고 지정
 // L, D → ++, --로 이동, B-> -1 후 delete, P → iterator에 바로 추가
-void main(){
+int main(){
+    string cursor_list;
+    string order;
+    vector<string> order_vector;
+    int number;
+    list<char> L;
+    cin >> cursor_list;
+    
+    cin >> number;
+
+    //L = cursor_list;
+    
+    for (int i = 0; i<cursor_list.size(); i++){
+        L.push_back(cursor_list[i]);
+        //cout << cursor_list[i] << "\n";
+    }
+    /*
+    for(auto iter = L.begin(); iter != L.end(); iter++){
+        cout << *iter << "\n";
+    }
+    */
+    list<char>::iterator iter = L.end();
+
+    for (int i = 0; i < number; i++){
+        getline(cin, order);
+        string word;
+        istringstream order_stream(order);
+
+        while(order_stream >> order){
+            order_vector.push_back(word);
+        }
+
+        
+        cout << *iter << "\n";
+
+        string main_order = order_vector[0];
+
+        if(main_order == "D"){
+
+        }
+        else if(main_order == "B"){
+
+        }
+        else{
+
+        }
+
+    }
+
+    return 0;
 }
 
