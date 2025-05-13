@@ -15,6 +15,8 @@ using namespace std;
 // 커서를 C++ 리스트의 iterator를 가지고 지정
 // L, D → ++, --로 이동, B-> -1 후 delete, P → iterator에 바로 추가
 int main(){
+    ios::sync_with_stdio(false); // C I/O 비활성화로 속도 향상
+    cin.tie(NULL);               // cin과 cout 분리
     string cursor_list;
     string order;
     vector<char> order_vector;
